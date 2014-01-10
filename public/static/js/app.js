@@ -14,10 +14,10 @@ cameo.app = angular.module('cameoApp', [
 cameo.app.
     config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider){
-        $locationProvider.html5Mode(true);
+        //$locationProvider.html5Mode(true);
         $routeProvider.
             when('/sendText', {
-                templateUrl: 'tpl/sendText.html',
+                templateUrl: 'static/tpl/sendText.html',
                 controller: 'SendTextCtrl'
             }).
             otherwise({

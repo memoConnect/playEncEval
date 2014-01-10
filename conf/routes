@@ -2,13 +2,12 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-
-
-
-POST           /api/sendText            controllers.Application.sendText
-OPTIONS        /api/sendText            controllers.Application.sendTextOptions
-GET            /api/getText/:id         controllers.Application.getText(id)
+POST           /api/sendText           controllers.Application.sendText
+OPTIONS        /api/sendText           controllers.Application.sendTextOptions
+GET            /api/getText/:id        controllers.Application.getText(id)
 
 # Home page
-GET            /                    controllers.Assets.at(path="/public/app", file="index.html")
-GET            /*foo                controllers.Application.staticAssets(path="/public/app", file="index.html", foo)
+
+GET /static/*file                      controllers.Assets.at(path="/public/static/", file)
+GET /                                  controllers.Assets.at(path="/public/", file="index.html")
+GET /*foo                              controllers.Application.staticAssets(path="/public/", file="index.html", foo)
