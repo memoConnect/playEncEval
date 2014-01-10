@@ -39,4 +39,7 @@ object Application extends Controller {
     request =>
       Ok("")
   }
+
+  def staticAssets(path: String, file: String, foo: String) =
+    controllers.Assets.at(path, file)
 }
