@@ -12,14 +12,16 @@ cameo.api.factory('Crypt',
                 return $http.get(cameo.restApi+"/getText/"+id)
             }
            ,sendFile: function(file){
-
                 return $http.post(
                     cameo.restApi+"/sendFile"
-                   ,{chunk:file.chunk}
+                   ,{
+                        token: ""
+                       ,username: ""
+                       ,chunk: file.chunk
+                    }
                    ,{
                         headers:{
-                            "Content-Type": "multipart/form-data"
-                           ,"X-File-Name": file.blob.name
+                            "X-File-Name": file.blob.name
                            ,"X-File-Size": file.blob.size
                            ,"X-Index": file.index
                            ,"X-Max-Chunks": file.maxChunks
