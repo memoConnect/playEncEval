@@ -14,12 +14,25 @@
     <script src="static/lib/angular/angular-route.min.js"></script>
     <script src="static/lib/angular/angular-cookies.min.js"></script>
 
+    <script src="static/lib/vendor/scrypt/aes.js"></script>
+    <script src="static/lib/vendor/scrypt/entropy.js"></script>
+    <script src="static/lib/vendor/scrypt/aesprng.js"></script>
+    <script src="static/lib/vendor/scrypt/lecuyer.js"></script>
+    <script src="static/lib/vendor/scrypt/md5.js"></script>
+    <script src="static/lib/vendor/scrypt/armour.js"></script>
+    <script src="static/lib/vendor/scrypt/utf-8.js"></script>
+    <script src="static/js/jscrypt.js"></script>
+
     <script src="static/js/app.js"></script>
     <script src="static/js/api.js"></script>
     <script src="static/js/controllers.js"></script>
 
 </head>
 <body>
+<div >
+    <a href="#/sendText">sendText</a> |
+    <a href="#/fileApi">fileApi</a>
+</div>
 <div class="view-container">
     <div ng-view class="view-frame"></div>
 </div>

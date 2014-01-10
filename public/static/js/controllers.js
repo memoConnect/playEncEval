@@ -324,3 +324,121 @@ cameo.ctrl.controller('SendTextCtrl', ['$scope', '$location', 'Crypt',
         }
     };
   }]);
+
+cameo.ctrl.controller('SendFileCtrl', ['$scope', '$location', 'Crypt',
+    function($scope, $location, Crypt){
+        $scope.percent = "Waiting...";
+        $scope.placeholder = {file:"chooseFile"};
+        $scope.slicesTotal = 0;
+
+        var BYTES_PER_CHUNK = 1024 * 1024; // 1MB chunk sizes.
+        var slices; // slices, value that gets decremented
+
+        function str2ab_blobreader(str, callback) {
+            var blob;
+            var BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder;
+            if (typeof(BlobBuilder) !== 'undefined') {
+                var bb = new BlobBuilder();
+                bb.append(str);
+                blob = bb.getBlob();
+            } else {
+                blob = new Blob([str]);
+            }
+            var f = new FileReader();
+            f.onload = function(e) {
+                callback(e.target.result)
+            }
+            f.readAsArrayBuffer(blob);
+        }
+
+        function uploadFile(blob, index, start, end) {
+            var end;
+            var chunk;
+
+            if (blob.webkitSlice) {
+                chunk = blob.webkitSlice(start, end);
+            } else if (blob.mozSlice) {
+                chunk = blob.mozSlice(start, end);
+            } else {
+                chunk = blob.slice(start, end);
+            }
+
+            if (blob.webkitSlice) { // android default browser in version 4.0.4 has webkitSlice instead of slice()
+                var buffer = str2ab_blobreader(chunk, function(buf) { // we cannot send a blob, because body payload will be empty
+                    chunkReady(blob,index,buf);
+                });
+            } else {
+                chunkReady(blob,index,chunk);
+            }
+        }
+
+        function chunkReady(blob,index,chunk){
+            Crypt.sendFile({
+                blob: blob
+               ,index: index
+               ,chunk: chunk
+               ,maxChunks: $scope.slicesTotal
+            }).
+            success(function(res,state){
+                slices--;
+                // if we have finished all slices
+                if(slices == 0) {
+                    //mergeFile(blob);
+                }
+            }).
+            error(function(res, state){
+
+            })/*.
+            load(function(){
+                $scope.progress = 100;
+                $scope.percent = "100%";
+            }).
+            progress(function(evt){
+                if (evt.lengthComputable) {
+                    $scope.progress.$attrs.max = $scope.slicesTotal;
+                    $scope.progress = index;
+                    $scope.percent = Math.round(index/$scope.slicesTotal * 100) + "%";
+                }
+            });*/
+        };
+
+        $scope.sendFile = function(){
+            var blob = $scope.uploadme;
+
+            var start = 0;
+            var end;
+            var index = 0;
+
+            // calculate the number of slices
+            slices = Math.ceil(blob.size / BYTES_PER_CHUNK);
+            $scope.slicesTotal = slices;
+
+            while(start < blob.size) {
+                end = start + BYTES_PER_CHUNK;
+                if(end > blob.size) {
+                    end = blob.size;
+                }
+
+                uploadFile(blob, index, start, end);
+
+                start = end;
+                index++;
+            }
+        };
+  }]).
+    directive("fileread", [function () {
+        return {
+            scope: {
+                fileread: "="
+            },
+            link: function (scope, element, attributes) {
+                element.bind("change", function (changeEvent) {
+                    scope.$apply(function () {
+                        scope.fileread = changeEvent.target.files[0];
+                        // or all selected files:
+                        // scope.fileread = changeEvent.target.files;
+                    });
+                });
+            }
+        }
+    }]);

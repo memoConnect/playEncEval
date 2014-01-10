@@ -1,6 +1,6 @@
 'use strict';
 var cameo = {
-    restApi: "http://192.168.178.40:9000"
+    restApi: "http://localhost:9000/api"
    ,token: null
 };
 
@@ -19,6 +19,10 @@ cameo.app.
             when('/sendText', {
                 templateUrl: 'static/tpl/sendText.html',
                 controller: 'SendTextCtrl'
+            }).
+            when('/fileApi', {
+                templateUrl: 'static/tpl/sendFile.html',
+                controller: 'SendFileCtrl'
             }).
             otherwise({
                 redirectTo: '/sendText'
