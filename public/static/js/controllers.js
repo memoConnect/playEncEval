@@ -352,10 +352,10 @@ cameo.ctrl.controller('SendFileCtrl', ['$scope', '$location', 'Crypt',
         }
 
         function uploadFile(blob, index, start, end) {
-            var end;
             var chunk;
 
             if (blob.webkitSlice) {
+                console.log("webkitSlice")
                 chunk = blob.webkitSlice(start, end);
             } else if (blob.mozSlice) {
                 chunk = blob.mozSlice(start, end);
@@ -373,34 +373,38 @@ cameo.ctrl.controller('SendFileCtrl', ['$scope', '$location', 'Crypt',
         }
 
         function chunkReady(blob,index,chunk){
-            Crypt.sendFile({
-                blob: blob
-               ,index: index
-               ,chunk: chunk
-               ,maxChunks: $scope.slicesTotal
-            }).
-            success(function(res,state){
-                slices--;
-                // if we have finished all slices
-                if(slices == 0) {
-                    //mergeFile(blob);
-                }
-            }).
-            error(function(res, state){
+            var reader = new FileReader();
+            reader.onload = function(loadEvent){
+                Crypt.sendFile({
+                    blob: blob
+                   ,index: index
+                   ,chunk: loadEvent.target.result
+                   ,maxChunks: $scope.slicesTotal
+                }).
+                success(function(res,state){
+                    slices--;
 
-            })/*.
-            load(function(){
-                $scope.progress = 100;
-                $scope.percent = "100%";
-            }).
-            progress(function(evt){
-                if (evt.lengthComputable) {
-                    $scope.progress.$attrs.max = $scope.slicesTotal;
                     $scope.progress = index;
                     $scope.percent = Math.round(index/$scope.slicesTotal * 100) + "%";
-                }
-            });*/
-        };
+
+                    // if we have finished all slices
+                    if(slices == 0) {
+                        //mergeFile(blob);
+                    }
+                }).
+                error(function(res, state){
+
+                })/*.
+                progress(function(evt){
+                    if (evt.lengthComputable){
+                        $scope.progress.$attrs.max = $scope.slicesTotal;
+                        $scope.progress = index;
+                        $scope.percent = Math.round(index/$scope.slicesTotal * 100) + "%";
+                    }
+                });*/
+            };
+            reader.readAsDataURL(chunk);
+        }
 
         $scope.sendFile = function(){
             var blob = $scope.uploadme;
@@ -438,6 +442,13 @@ cameo.ctrl.controller('SendFileCtrl', ['$scope', '$location', 'Crypt',
                         // or all selected files:
                         // scope.fileread = changeEvent.target.files;
                     });
+                    var reader = new FileReader();
+                    reader.onload = function (loadEvent) {
+                        scope.$apply(function () {
+                            scope.fileread.base = loadEvent.target.result;
+                        });
+                    }
+                    reader.readAsDataURL(changeEvent.target.files[0]);
                 });
             }
         }
