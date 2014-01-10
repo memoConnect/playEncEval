@@ -1,0 +1,47 @@
+<form name="crypt" ng-controller="SendTextCtrl">
+    <pre>
+        Formdata: {{ formData }}<br/>
+        ApiState: {{ api.state }}
+        ApiResponse: {{ api.res }}
+    </pre>
+
+    <h2>SendText and encrypt</h2>
+
+    <span class="label">key</span>
+    <input type="text" ng-model="formData.key" name="key" value="" placeholder="{{placeholder.key}}" class="input-xlarge" /><br />
+    <input type="radio" ng-model="keytype" value="text" /> Text
+    <input type="radio" ng-model="keytype" value="hex" /> Hexadecimal
+    <button ng-click="genKey()" type="button">generate</button>
+    <br />
+
+    <span class="label">text</span>
+    <textarea ng-model="formData.plainText" name="text" placeholder="{{placeholder.plainText}}" class="input-xlarge"></textarea><br />
+
+    <button type="button" ng-click="genMassiveMessage()">Generate Message</button>
+    <input type="text" ng-model="massiveSize" value="" /><br />
+
+    <input type="radio" ng-model="encoding" value="codegroup" /> Codegroup
+    <input type="radio" ng-model="encoding" value="hex" /> Hexadecimal
+    <input type="radio" ng-model="encoding" value="base64" /> Base 64
+    <button ng-click="encrypt()" type="button">Encrypt</button>
+    <br />
+
+    <span class="label">encrypted</span>
+    <textarea ng-model="formData.encryptText" name="text" placeholder="{{placeholder.encryptText}}" class="input-xlarge"></textarea>
+    <br />
+
+    <button type="button" ng-click="sendText()">Send to Api</button>
+
+    <h2>GetText and decrypt</h2>
+    <input type="text" ng-model="textId" placeholder="textId" value="" />
+    <button ng-click="decryptWithoutApi()" type="button">Decrypt without api</button>
+    <button ng-click="getText()" type="button">Get Text from API and decrypt</button>
+    <br />
+
+    <span class="label">cipher</span>
+    <textarea ng-model="decrypted.cipher" class="input-xlarge"></textarea><br />
+
+    <span class="label">decrypted</span>
+    <textarea ng-model="decrypted.text" class="input-xlarge"></textarea><br />
+
+</form>
