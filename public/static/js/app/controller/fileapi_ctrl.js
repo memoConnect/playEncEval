@@ -94,8 +94,7 @@ define(['app','service/apiService'], function (app, Crypt) {
             };
 
             $scope.calcChunkSize = function(event){
-                console.log(event)
-                $scope.slicesTotal = Math.ceil(event.target.files[0].size / ($scope.chunkSize*1024));;
+                $scope.slicesTotal = Math.ceil(event.target.files[0].size / ($scope.chunkSize*1024));
             };
 
             $scope.sendFile = function(){
