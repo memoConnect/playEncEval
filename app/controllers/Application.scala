@@ -5,6 +5,7 @@ import play.api.libs.json._
 import models.Text
 import scala.concurrent.ExecutionContext
 import ExecutionContext.Implicits.global
+import play.api.Logger
 
 
 object Application extends Controller {
@@ -39,6 +40,15 @@ object Application extends Controller {
     request =>
       Ok("")
   }
+
+  def sendFile = Action {
+    request =>
+
+      Logger.debug(request.body.toString)
+
+      Ok("")
+  }
+
 
   def staticAssets(path: String, file: String, foo: String) =
     controllers.Assets.at(path, file)

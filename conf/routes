@@ -5,9 +5,11 @@
 POST           /api/sendText           controllers.Application.sendText
 OPTIONS        /api/sendText           controllers.Application.sendTextOptions
 GET            /api/getText/:id        controllers.Application.getText(id)
+POST            /api/sendFile           controllers.Application.sendFile
+
 
 # Home page
 
-GET /static/*file                      controllers.Assets.at(path="/public/static/", file)
-GET /                                  controllers.Assets.at(path="/public/", file="index.html")
-GET /*foo                              controllers.Application.staticAssets(path="/public/", file="index.html", foo)
+GET            /static/*file           controllers.Assets.at(path="/public/static/", file)
+GET            /                       controllers.Assets.at(path="/public/", file="index.html")
+GET            /*foo                   controllers.Application.staticAssets(path="/public/", file="index.html", foo)
