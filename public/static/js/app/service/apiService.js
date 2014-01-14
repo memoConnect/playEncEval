@@ -1,8 +1,6 @@
 'use strict';
-
-cameo.api = angular.module('cameoApi', ['ngResource']);
-
-cameo.api.factory('Crypt',
+define(['app','angular-resource'], function (app) {
+    app.register.factory('Crypt',
     function($http){
         return {
             sendText: function(text){
@@ -31,3 +29,4 @@ cameo.api.factory('Crypt',
             }
         };
     });
+})

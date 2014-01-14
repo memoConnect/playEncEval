@@ -1,9 +1,5 @@
-<form name="crypt" ng-controller="SendTextCtrl">
-    <pre>
-        Formdata: {{ formData }}<br/>
-        ApiState: {{ api.state }}
-        ApiResponse: {{ api.res }}
-    </pre>
+<form name="crypt" ng-controller="JavascryptCtrl">
+    <h1><a href="http://www.fourmilab.ch/javascrypt/" target="_blank">library link</a></h1>
 
     <h2>SendText and encrypt</h2>
 
@@ -43,5 +39,11 @@
 
     <span class="label">decrypted</span>
     <textarea ng-model="decrypted.text" class="input-xlarge"></textarea><br />
+
+    <pre>
+        Formdata: {{ formData }}<br/>
+        ApiState: {{ api.state }}
+        ApiResponse: {{ api.res }}
+    </pre>
 
 </form>

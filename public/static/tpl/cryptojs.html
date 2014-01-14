@@ -1,0 +1,26 @@
+<form name="crypt" ng-controller="CryptoJsCtrl">
+    <h1><a href="https://code.google.com/p/crypto-js/" target="_blank">library link</a> - aes, DES, Triple DES, Rabbit, RC4, RC4Drop</h1>
+
+    <span class="label">aesSize</span>
+    <h3>CryptoJS supports AES-128, AES-192, and AES-256. It will pick the variant by the size of the key you pass in. If you use a passphrase, then it will generate a 256-bit key.</h3>
+    <br />
+
+    <span class="label">key</span>
+    <input type="text" ng-model="formData.key" name="key" value="" placeholder="{{placeholder.key}}" class="input-xlarge" /><br />
+    <br />
+
+    <span class="label">text</span>
+    <textarea ng-model="formData.plainText" name="text" placeholder="{{placeholder.plainText}}" class="input-xlarge"></textarea><br />
+
+    <span class="label">encrypt</span>
+    <textarea ng-model="formData.encrypt" name="text" class="input-xlarge"></textarea>
+    <button ng-click="encrypt()">do it</button>
+    <br />
+
+    <span class="label">decrypt</span>
+    <textarea ng-model="formData.decrypt" name="text" class="input-xlarge"></textarea>
+    <button ng-click="decrypt()">do it</button>
+    <br />
+
+    <pre>Formdata: {{ formData }}</pre>
+</form>

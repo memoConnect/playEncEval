@@ -1,0 +1,15 @@
+<h2>Chunked Uploader</h2>
+
+<span class="label">chunkSize</span>
+<input type="text" ng-model="chunkSize" ng-keyup="checkEmpty(1)" value="" /> * 1024 = {{bytesToSize(chunkSize*1024)}}
+<br/>
+
+<input type="file" name="file" fileread="uploadme" onchange="angular.element(this).scope().calcChunkSize(event)" placeholder="placeholder.file">
+<button ng-click="sendFile()">Send</button>
+<br/>
+
+<div ng-model="percent"></div>
+<progress ng-model="progressBar" value="0" max="{{slicesTotal}}"></progress>
+<br/>
+
+<pre>slicesTotal: {{ slicesTotal }}<br /></pre>
