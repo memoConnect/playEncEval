@@ -6,7 +6,7 @@ require.config({
        ,'angular-route': '../vendor/angular/angular-route.min'
        ,'angular-resource': '../vendor/angular/angular-resource.min'
        ,'angular-cookies': '../vendor/angular/angular-cookies.min'
-        //,'async': 'vendor/requirejs/async'
+
        ,'angularAMD': '../vendor/requirejs/angularAMD'
        ,'ngload': '../vendor/requirejs/ngload'
 
@@ -17,8 +17,14 @@ require.config({
        ,'JavascryptCtrl': 'controller/javascrypt_ctrl'
        ,'MovableCtrl': 'controller/movable_ctrl'
        ,'CryptoJsCtrl': 'controller/cryptojs_ctrl'
-
+       ,'OpenPgpJsCtrl': 'controller/openpgpjs_ctrl'
     },
+    packages: [
+        {
+            name: '_v',
+            location: '../vendor'
+        }
+    ],
     // Add angular modules that does not support AMD out of the box, put it in a shim
     shim: {
         'angularAMD': ['angular']

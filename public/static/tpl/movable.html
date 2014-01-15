@@ -1,17 +1,18 @@
 <form name="crypt" ng-controller="MovableCtrl">
     <h1><a href="http://www.movable-type.co.uk/scripts/aes.html" target="_blank">library link</a> - only aes</h1>
 
-    <span class="label">aesSize</span>
-    {{ aesSize }}
-    <br />
     <br />
 
     <span class="label">key</span>
-    <input type="text" ng-model="formData.key" name="key" value="" placeholder="{{placeholder.key}}" class="input-xlarge" /><br />
+    <input type="text" ng-model="formData.key" name="key" value="" placeholder="{{placeholder.key}}" class="input-xlarge" />
+    {{formData.key.length}}<br />
+    <button type="button" ng-click="genKey()">generate</button>
     <br />
 
     <span class="label">text</span>
-    <textarea ng-model="formData.plainText" name="text" placeholder="{{placeholder.plainText}}" class="input-xlarge"></textarea><br />
+    <textarea ng-model="formData.plainText" name="text" placeholder="{{placeholder.plainText}}" class="input-xlarge"></textarea>
+    {{formData.plainText.length}}
+    <br />
 
     <span class="label">encrypt</span>
     <textarea ng-model="formData.encrypt" name="text" class="input-xlarge"></textarea>
@@ -23,5 +24,5 @@
     <button ng-click="decrypt()">do it</button>
     <br />
 
-    <pre>Formdata: {{ formData }}</pre>
+    <pre>Time: {{time}}<br /></pre>
 </form>

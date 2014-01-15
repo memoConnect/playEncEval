@@ -1,31 +1,34 @@
 'use strict';
 var prng;
-define(['app','ngload!service/apiService'
-    ,'../vendor/scrypt/aes'
-    ,'../vendor/scrypt/entropy'
-    ,'../vendor/scrypt/aesprng'
-    ,'../vendor/scrypt/lecuyer'
-    ,'../vendor/scrypt/md5'
-    ,'../vendor/scrypt/armour'
-    ,'../vendor/scrypt/utf-8'
-], function (app) {
-    app.register.controller('JavascryptCtrl', ['$scope', '$location', 'Crypt',
-        function($scope, $location, Crypt) {
-            $scope.key = ""
-            $scope.hs = ""
-            $scope.keytype = "text"
-            $scope.encoding = "codegroup"
-            $scope.textId = ""
-            $scope.massiveSize = 1024
+define(['app','service/apiService','service/cryptoService'
+    ,'_v/scrypt/aes'
+    ,'_v/scrypt/entropy'
+    ,'_v/scrypt/aesprng'
+    ,'_v/scrypt/lecuyer'
+    ,'_v/scrypt/md5'
+    ,'_v/scrypt/armour'
+    ,'_v/scrypt/utf-8'], function (app) {
+    app.register.controller('JavascryptCtrl', ['$scope', '$location', 'Api', 'Crypto',
+        function($scope, $location, Api, Crypto) {
+            $scope.withoutApi = true;
+            $scope.time = {encrypt:0,decrypt:0};
+            $scope.key = "";
+            $scope.hs = "";
+            $scope.keytype = "text";
+            $scope.encoding = "codegroup";
+            $scope.textId = "";
             $scope.placeholder = {
                 key: "PrivateKey"
-                ,plainText: "PlainText"
-                ,encryptText: "Encrypted"
-                ,textId: "optional textId"
+               ,plainText: "PlainText"
+               ,encryptText: "Encrypted"
+               ,textId: "optional textId"
             };
-            $scope.formData = {};
+            $scope.formData = {
+                key: Crypto.genKey()
+               ,plainText: Crypto.getLoremIpsum()
+            };
             $scope.api = {state:"not called yet",res:{}};
-            $scope.decrypted = {cipher:"",text:""}
+            $scope.crypto = {encrypt:"",decrypt:""};
 
             $scope.genKey = function(){
                 var i, j, k = "";
@@ -152,6 +155,7 @@ define(['app','ngload!service/apiService'
             };
 
             $scope.encrypt = function(){
+                Crypto.benchmarkStart();
                 var v, i;
                 var prefix = "#####  Encrypted: decrypt with cameo/\n",
                     suffix = "#####  End encrypted message\n";
@@ -164,7 +168,7 @@ define(['app','ngload!service/apiService'
                     alert("No plain text to encrypt!  Please enter or paste plain text in the field above.");
                     return;
                 }
-                $scope.formData.encryptText = "";
+                $scope.crypto.encrypt = "";
                 $scope.setKey();
 
                 addEntropyTime();
@@ -213,28 +217,30 @@ define(['app','ngload!service/apiService'
                 } else if ($scope.encoding == "base64") {
                     v = armour_base64(ct);
                 }
-                $scope.formData.encryptText = prefix + v + suffix;
+                $scope.crypto.encrypt = prefix + v + suffix;
+                $scope.time.encrypt = Crypto.benchmarkEnd();
             };
 
             $scope.decrypt = function(){
+                Crypto.benchmarkStart();
                 if ($scope.formData.key == "") {
                     alert("Please specify a key with which to decrypt the message.");
                     return;
                 }
-                if ($scope.decrypted.cipher == "") {
+                if ($scope.crypto.encrypt == "") {
                     alert("No cipher text to decrypt!  Please enter or paste cipher text in the field above.");
                     return;
                 }
                 //document.plain.text.value = "";
                 $scope.setKey();
                 var ct = new Array(), kt;
-                kt = $scope.determineArmourType($scope.decrypted.cipher);
+                kt = $scope.determineArmourType($scope.crypto.encrypt);
                 if (kt == 0) {
-                    ct = disarm_codegroup($scope.decrypted.cipher);
+                    ct = disarm_codegroup($scope.crypto.encrypt);
                 } else if (kt == 1) {
-                    ct = disarm_hex($scope.decrypted.cipher);
+                    ct = disarm_hex($scope.crypto.encrypt);
                 } else if (kt == 2) {
-                    ct = disarm_base64($scope.decrypted.cipher);
+                    ct = disarm_base64($scope.crypto.encrypt);
                 }
 
                 var result = rijndaelDecrypt(ct, $scope.key, "CBC");
@@ -285,16 +291,12 @@ define(['app','ngload!service/apiService'
 
                 //  That's it; plug plaintext into the result field
 
-                $scope.decrypted.text = decode_utf8(plaintext);
-            };
-
-            $scope.decryptWithoutApi = function(){
-                $scope.decrypted.cipher = $scope.formData.encryptText;
-                $scope.decrypt()
+                $scope.crypto.decrypt = decode_utf8(plaintext);
+                $scope.time.decrypt = Crypto.benchmarkEnd();
             };
 
             $scope.sendText = function(){
-                Crypt.sendText($scope.formData.encryptText).
+                Api.sendText($scope.crypto.encrypt).
                     success(function(res,state){
                         $scope.api.res = {success:true,res:res};
                         $scope.api.state = state;
@@ -308,26 +310,18 @@ define(['app','ngload!service/apiService'
 
             $scope.getText = function(){
                 if($scope.textId != ""){
-                    Crypt.getText($scope.textId).
+                    Api.getText($scope.textId).
                         success(function(res,state){
                             $scope.api.res = {success:true,res:res};
                             $scope.api.state = state;
 
-                            $scope.decrypted.cipher = res.text;
+                            $scope.crypto.encrypt = res.text;
                             $scope.decrypt();
                         }).
                         error(function(res, state){
                             $scope.api.res = {error:true,res:res};
                             $scope.api.state = state == 0?"404":state;
                         })
-                }
-            };
-
-            $scope.genMassiveMessage = function(){
-                var length = $scope.massiveSize*1000;
-                $scope.formData.plainText = "";
-                for(var i=0; i<length; i++){
-                    $scope.formData.plainText += "x"
                 }
             };
         }]);

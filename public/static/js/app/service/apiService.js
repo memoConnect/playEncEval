@@ -1,6 +1,7 @@
 'use strict';
+
 define(['app','angular-resource'], function (app) {
-    app.register.factory('Crypt',
+    app.register.factory('Api',
     function($http){
         return {
             sendText: function(text){

@@ -29,6 +29,10 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
                 templateUrl: 'static/tpl/cryptojs.html',
                 controller: 'CryptoJsCtrl'
             })).
+            when('/openpgpjs', angularAMD.route({
+                templateUrl: 'static/tpl/openpgpjs.html',
+                controller: 'OpenPgpJsCtrl'
+            })).
             otherwise({
                 redirectTo: '/home'
             });
