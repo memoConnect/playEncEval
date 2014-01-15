@@ -2,13 +2,16 @@ package controllers
 
 import play.api.mvc._
 import play.api.libs.json._
-import models.Text
-import scala.concurrent.ExecutionContext
+import models.{FileChunk, FileMeta, Text}
+import scala.concurrent.{Future, ExecutionContext}
 import ExecutionContext.Implicits.global
-import play.api.Logger
+import play.modules.reactivemongo.MongoController
+import reactivemongo.api.gridfs.GridFS
+import scala.util.Random
+import reactivemongo.bson.BSONObjectID
 
 
-object Application extends Controller {
+object Application extends Controller with MongoController {
 
   def index = Action {
     Ok("moin")
@@ -41,14 +44,68 @@ object Application extends Controller {
       Ok("")
   }
 
-  def sendFile = Action {
+  val gridFS = new GridFS(db)
+  gridFS.ensureIndex()
+
+  def sendFile = Action(parse.tolerantJson(256 * 1024)) {
     request =>
 
-      Logger.debug(request.body.toString)
+      val assetId = String.valueOf(Random.nextInt(1000000))
+      val fileName = request.headers.get("X-File-Name")
+      val maxChunks = request.headers.get("X-Max-Chunks")
+      val fileSize = request.headers.get("X-File-Size")
+      val chunkIndex = request.headers.get("X-Index").get
 
-      Ok("")
+      if (fileName.isEmpty || maxChunks.isEmpty || fileSize.isEmpty) {
+        BadRequest("Header information missing.")
+      }
+      else {
+
+        val objectId = BSONObjectID.generate.stringify
+        val objJson = Json.obj("_id" -> Json.obj("$oid" -> objectId))
+
+        val fileMeta = new FileMeta(assetId, Seq(Json.obj(chunkIndex -> objectId)), fileName.get, Integer.parseInt(maxChunks.get), Integer.parseInt(fileSize.get))
+
+        request.body.validate[FileChunk].map {
+          chunk =>
+            val c = Json.toJson(chunk).as[JsObject] ++ objJson
+            FileChunk.col.insert(c)
+        }.recoverTotal(e => BadRequest(JsError.toFlatJson(e)))
+
+        FileMeta.col.insert(fileMeta)
+        Ok(Json.toJson(fileMeta))
+      }
   }
 
+  def sendFileChunks(assetId: String) = Action.async(parse.tolerantJson(256 * 1024)) {
+    request => {
+      val fileName = request.headers.get("X-File-Name")
+      val maxChunks = request.headers.get("X-Max-Chunks")
+      val fileSize = request.headers.get("X-File-Size")
+      val chunkIndex = request.headers.get("X-Index").get
+
+      val objectId = BSONObjectID.generate.stringify
+      val objJson = Json.obj("_id" -> Json.obj("$oid" -> objectId))
+
+      if (fileName.isEmpty || maxChunks.isEmpty || fileSize.isEmpty) {
+        Future.successful(BadRequest("Header information missing."))
+      } else {
+        FileMeta.col.find(Json.obj("assetId" -> assetId)).one[FileMeta].map {
+          case None => NotFound("Invalid assetId")
+          case Some(fileMeta) => {
+            request.body.validate[FileChunk].map {
+              chunk =>
+                val c = Json.toJson(chunk).as[JsObject] ++ objJson
+                FileChunk.col.insert(c)
+                FileMeta.col.insert(Json.obj("$push"-> Json.obj("chunks" -> Json.obj(chunkIndex -> objectId))))
+
+                Ok("")
+            }.recoverTotal(e => BadRequest(JsError.toFlatJson(e)))
+          }
+        }
+      }
+    }
+  }
 
   def staticAssets(path: String, file: String, foo: String) =
     controllers.Assets.at(path, file)
