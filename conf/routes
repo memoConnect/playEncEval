@@ -2,15 +2,17 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-POST           /api/sendText                 controllers.Application.sendText
-OPTIONS        /api/sendText                 controllers.Application.sendTextOptions
-GET            /api/getText/:id              controllers.Application.getText(id)
-POST           /api/sendFile                 controllers.Application.sendFile
-POST           /api/sendFile/:assetId        controllers.Application.sendFileChunks(assetId)
+POST           /api/sendText                            controllers.Application.sendText
+OPTIONS        /api/sendText                            controllers.Application.sendTextOptions
+GET            /api/getText/:id                         controllers.Application.getText(id)
+POST           /api/sendFile                            controllers.Application.sendFile
+POST           /api/sendFile/:assetId                   controllers.Application.sendFileChunks(assetId)
+GET            /api/getFile/:assetId                    controllers.Application.getFile(assetId)
+GET            /api/getFile/:assetId/:chunkIndex        controllers.Application.getFileChunk(assetId, chunkIndex)
 
 
 # Home page
 
-GET            /static/*file                 controllers.Assets.at(path="/public/static/", file)
-GET            /                             controllers.Assets.at(path="/public/", file="index.html")
-GET            /*foo                         controllers.Application.staticAssets(path="/public/", file="index.html", foo)
+GET            /static/*file                            controllers.Assets.at(path="/public/static/", file)
+GET            /                                        controllers.Assets.at(path="/public/", file="index.html")
+GET            /*foo                                    controllers.Application.staticAssets(path="/public/", file="index.html", foo)

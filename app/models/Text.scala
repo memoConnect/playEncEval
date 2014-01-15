@@ -19,6 +19,7 @@ case class Text(
 
 
 object Text {
+
   // mongo collection
   def col: JSONCollection = ReactiveMongoPlugin.db.collection[JSONCollection]("text")
 

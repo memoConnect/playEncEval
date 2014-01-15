@@ -13,7 +13,7 @@ import play.api.Play.current
  */
 case class FileMeta(
                      assetId: String,
-                     chunks: Seq[JsValue],
+                     chunks: JsObject,
                      fileName: String,
                      maxChunks: Int,
                      fileSize: Int

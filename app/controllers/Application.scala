@@ -9,6 +9,8 @@ import play.modules.reactivemongo.MongoController
 import reactivemongo.api.gridfs.GridFS
 import scala.util.Random
 import reactivemongo.bson.BSONObjectID
+import play.api.libs.json
+import play.api.Logger
 
 
 object Application extends Controller with MongoController {
@@ -64,7 +66,7 @@ object Application extends Controller with MongoController {
         val objectId = BSONObjectID.generate.stringify
         val objJson = Json.obj("_id" -> Json.obj("$oid" -> objectId))
 
-        val fileMeta = new FileMeta(assetId, Seq(Json.obj(chunkIndex -> objectId)), fileName.get, Integer.parseInt(maxChunks.get), Integer.parseInt(fileSize.get))
+        val fileMeta = new FileMeta(assetId, Json.obj(chunkIndex -> objectId), fileName.get, Integer.parseInt(maxChunks.get), Integer.parseInt(fileSize.get))
 
         request.body.validate[FileChunk].map {
           chunk =>
@@ -97,7 +99,7 @@ object Application extends Controller with MongoController {
               chunk =>
                 val c = Json.toJson(chunk).as[JsObject] ++ objJson
                 FileChunk.col.insert(c)
-                FileMeta.col.insert(Json.obj("$push"-> Json.obj("chunks" -> Json.obj(chunkIndex -> objectId))))
+                FileMeta.col.insert(Json.obj("$push" -> Json.obj("chunks" -> Json.obj(chunkIndex -> objectId))))
 
                 Ok("")
             }.recoverTotal(e => BadRequest(JsError.toFlatJson(e)))
@@ -106,6 +108,38 @@ object Application extends Controller with MongoController {
       }
     }
   }
+
+  def getFile(assetId: String) = Action.async {
+    request =>
+      FileMeta.col.find(Json.obj("assetId" -> assetId)).one[FileMeta].map {
+        case None => NotFound("Invalid assetId")
+        case Some(fileMeta) => {
+          Ok(Json.toJson(fileMeta))
+        }
+      }
+
+  }
+
+  def getFileChunk(assetId: String, chunkIndex: String) = Action.async {
+    request =>
+      FileMeta.col.find(Json.obj("assetId" -> assetId)).one[FileMeta].flatMap {
+        case None => Future(NotFound("Invalid assetId"))
+
+        case Some(fileMeta) => {
+
+          val oid = ( fileMeta.chunks \ chunkIndex ).asOpt[String].getOrElse("")
+
+          FileChunk.col.find(Json.obj("_id" -> Json.obj("$oid" -> oid))).one[FileChunk].map {
+            case None => NotFound("invalid oid")
+            case Some(chunk) =>
+              Ok(Json.toJson(chunk))
+          }
+
+        }
+      }
+
+  }
+
 
   def staticAssets(path: String, file: String, foo: String) =
     controllers.Assets.at(path, file)
