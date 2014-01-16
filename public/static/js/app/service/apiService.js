@@ -12,11 +12,9 @@ define(['app','angular-resource'], function (app) {
             }
            ,sendFile: function(file){
                 return $http.post(
-                    cameo.restApi+"/sendFile"
+                    cameo.restApi+"/sendFile"+(file.assetId !=""?"/"+file.assetId:"")
                    ,{
-                        token: ""
-                       ,username: ""
-                       ,chunk: file.chunk
+                        chunk: file.chunk
                     }
                    ,{
                         headers:{
@@ -28,6 +26,7 @@ define(['app','angular-resource'], function (app) {
                     }
                 )
             }
+
         };
     });
 })
