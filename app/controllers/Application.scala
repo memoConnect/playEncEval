@@ -9,6 +9,7 @@ import play.modules.reactivemongo.MongoController
 import reactivemongo.api.gridfs.GridFS
 import scala.util.Random
 import reactivemongo.bson.BSONObjectID
+import play.api.Logger
 
 
 object Application extends Controller with MongoController {
@@ -47,7 +48,7 @@ object Application extends Controller with MongoController {
   val gridFS = new GridFS(db)
   gridFS.ensureIndex()
 
-  def sendFile = Action(parse.tolerantJson(256 * 1024)) {
+  def sendFile = Action(parse.tolerantJson(512 * 1024)) {
     request =>
 
       val assetId = String.valueOf(Random.nextInt(1000000))
@@ -97,7 +98,13 @@ object Application extends Controller with MongoController {
               chunk =>
                 val c = Json.toJson(chunk).as[JsObject] ++ objJson
                 FileChunk.col.insert(c)
-                FileMeta.col.insert(Json.obj("$push" -> Json.obj("chunks" -> Json.obj(chunkIndex -> objectId))))
+
+                val query = Json.obj("assetId" -> assetId)
+                val set = Json.obj("$set" -> Json.obj("chunks." + chunkIndex -> objectId))
+
+              Logger.debug(set.toString())
+
+                FileMeta.col.update(query, set)
                 Ok(Json.obj("assetId" -> assetId))
             }.recoverTotal(e => BadRequest(JsError.toFlatJson(e)))
           }
