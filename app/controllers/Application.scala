@@ -98,8 +98,7 @@ object Application extends Controller with MongoController {
                 val c = Json.toJson(chunk).as[JsObject] ++ objJson
                 FileChunk.col.insert(c)
                 FileMeta.col.insert(Json.obj("$push" -> Json.obj("chunks" -> Json.obj(chunkIndex -> objectId))))
-
-                Ok("")
+                Ok(Json.obj("assetId" -> assetId))
             }.recoverTotal(e => BadRequest(JsError.toFlatJson(e)))
           }
         }
