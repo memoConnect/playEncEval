@@ -22,8 +22,12 @@ require.config({
     },
     packages: [
         {
-            name: '_v',
-            location: '../vendor'
+            name: '_v'
+           ,location: '../vendor'
+        }
+       ,{
+            name: '_s'
+           ,location: 'service'
         }
     ],
     // Add angular modules that does not support AMD out of the box, put it in a shim

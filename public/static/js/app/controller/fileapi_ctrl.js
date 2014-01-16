@@ -1,15 +1,20 @@
 'use strict';
-define(['app','service/apiService'], function (app) {
-    app.register.controller('FileApiCtrl', ['$scope', '$location', 'Api',
-    function($scope, $location, Api){
+define(['app','_s/utilService','_s/apiService'], function (app) {
+    app.register.controller('FileApiCtrl', ['$scope', function($scope){}]);
+
+    app.register.controller('SendFileCtrl', ['$rootScope', '$scope', 'Api', 'Util',
+    function($rootScope, $scope, Api, Util){
+        $scope.Util = Util;
+
+        $scope.fileSize = 0;
         $scope.percent = 0;
         $scope.progress = 0;
         $scope.placeholder = {file:"chooseFile"};
-        $scope.chunkSize = 128;
-        $scope.maxChunks = 0;
+        $scope.chunkSize = 256;
+        $scope.chunksTotal = 0;
         $scope.chunksQueue = 0;
-        $scope.uploadme = {};
-        $scope.assetId = "";
+        $scope.assetId = 0;
+        $scope.apiError = {};
 
         $scope.bytesToSize = function(bytes) {
             var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -17,56 +22,52 @@ define(['app','service/apiService'], function (app) {
             var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
             return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
         };
-
         $scope.checkEmpty = function(default_val){
             if($scope.chunkSize == "")
                 $scope.chunkSize = default_val
         };
-
         $scope.calcChunkSize = function(event){
-            $scope.maxChunks = Math.ceil(event.target.files[0].size / ($scope.chunkSize*1024));
+            $scope.fileSize = event.target.files[0].size;
+            $scope.chunksTotal = Math.ceil($scope.fileSize / ($scope.chunkSize*1024));
         };
 
         $scope.sendFile = function(){
-            var file = $scope.uploadme;
             // calculate the number of slices
-            $scope.maxChunks = Math.ceil(file.size / ($scope.chunkSize*1024));
-            $scope.chunksQueue = $scope.maxChunks;
+            $scope.apiError = {};
+            $scope.chunksTotal = Math.ceil($scope.fileSize / ($scope.chunkSize*1024));
+            $scope.chunksQueue = $scope.chunksTotal;
             // start sending
             sendChunks(0);
         };
         // step 1 calc start & end byte
         function sendChunks(index){
-            var file = $scope.uploadme, startByte, endByte;
+            var startByte = index > 0 ?index*($scope.chunkSize*1024):0;
+            var endByte = startByte + ($scope.chunkSize*1024);
 
-            startByte = index > 0 ?index*($scope.chunkSize*1024):0;
-            endByte = startByte + ($scope.chunkSize*1024);
+            if(endByte > $scope.fileSize)
+                endByte = $scope.fileSize;
 
-            if(endByte > file.size)
-                endByte = file.size;
-
-            if(startByte < file.size){
-                sliceChunk(file, index, startByte, endByte);
-            }
+            if(startByte < $scope.fileSize)
+                sliceChunk(index, startByte, endByte);
         }
         // step 2 slice chunk from blob
-        function sliceChunk(blob, index, start, end) {
-            var chunk;
+        function sliceChunk(index, start, end) {
+            var file = $scope.file, chunk;
 
-            if (blob.webkitSlice) {
-                chunk = blob.webkitSlice(start, end);
-            } else if (blob.mozSlice) {
-                chunk = blob.mozSlice(start, end);
+            if (file.webkitSlice) {
+                chunk = file.webkitSlice(start, end);
+            } else if (file.mozSlice) {
+                chunk = file.mozSlice(start, end);
             } else {
-                chunk = blob.slice(start, end);
+                chunk = file.slice(start, end);
             }
 
-            if (blob.webkitSlice) { // android default browser in version 4.0.4 has webkitSlice instead of slice()
-                var buffer = str2ab_blobreader(chunk, function(buf) { // we cannot send a blob, because body payload will be empty
-                    chunkReadyForUpload(blob,index,buf);
+            if (file.webkitSlice) { // android default browser in version 4.0.4 has webkitSlice instead of slice()
+                str2ab_blobreader(chunk, function(buf) { // we cannot send a blob, because body payload will be empty
+                    chunkReadyForUpload(index,buf);
                 });
             } else {
-                chunkReadyForUpload(blob,index,chunk);
+                chunkReadyForUpload(index,chunk);
             }
         }
         function str2ab_blobreader(str, callback) {
@@ -86,24 +87,25 @@ define(['app','service/apiService'], function (app) {
             f.readAsArrayBuffer(blob);
         }
         // step 3 read chunk from blob and send to api
-        function chunkReadyForUpload(blob,index,chunk){
+        function chunkReadyForUpload(index,chunk){
             var reader = new FileReader();
             reader.onload = function(event){
                 Api.sendFile({
-                    blob: blob
+                    file: $scope.file
                    ,index: index
                    ,chunk: event.target.result
-                   ,maxChunks: $scope.maxChunks
+                   ,chunksTotal: $scope.chunksTotal
                    ,assetId: $scope.assetId
                 }).
-                success(function(res){
-                    if(angular.isDefined(res) && res != "" && "assetId" in res){
-                        $scope.assetId = res.assetId;
+                success(function(json){
+                    if(angular.isDefined(json) && json != "" && "assetId" in json){
+                        $scope.assetId = json.assetId;
+                        $rootScope.$broadcast("SendFileCtrl.assetIdChanged",json.assetId);
                     }
                     chunkUploaded(index+1);
                 }).
-                error(function(res,state){
-
+                error(function(res, state){
+                    $scope.apiError = state;
                 });
             };
             reader.readAsDataURL(chunk);
@@ -112,12 +114,11 @@ define(['app','service/apiService'], function (app) {
         function chunkUploaded(index){
             $scope.chunksQueue--;
             $scope.progress = index;
-            $scope.percent = Math.round(index/$scope.maxChunks * 100);
+            $scope.percent = Math.round(index/$scope.chunksTotal * 100);
             sendChunks(index);
         }
-
     }]);
-    app.register.directive("fileread", [function () {
+    app.register.directive('fileread', [function () {
         return {
             scope: {
                 fileread: "="
@@ -139,6 +140,24 @@ define(['app','service/apiService'], function (app) {
                 });
             }
         }
+    }]);
+
+    app.register.controller('GetFileCtrl', ['$scope', 'Api', 'Util',
+    function($scope, Api, Util){
+        $scope.Util = Util;
+
+        $scope.assetId = 117850;
+        $scope.file = {};
+
+        $scope.$on("SendFileCtrl.assetIdChanged",function(event, assetId){
+            $scope.assetId = assetId;
+        });
+
+        $scope.getFile = function(){
+            Api.getFile($scope.assetId).success(function(json){
+                $scope.file = json;
+            });
+        };
     }]);
 });
 

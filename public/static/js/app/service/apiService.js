@@ -10,23 +10,25 @@ define(['app','angular-resource'], function (app) {
            ,getText: function(id){
                 return $http.get(cameo.restApi+"/getText/"+id)
             }
-           ,sendFile: function(file){
+           ,sendFile: function(data){
                 return $http.post(
-                    cameo.restApi+"/sendFile"+(file.assetId !=""?"/"+file.assetId:"")
+                    cameo.restApi+"/sendFile"+(data.assetId !=""?"/"+data.assetId:"")
                    ,{
-                        chunk: file.chunk
+                        chunk: data.chunk
                     }
                    ,{
                         headers:{
-                            "X-File-Name": file.blob.name
-                           ,"X-File-Size": file.blob.size
-                           ,"X-Index": file.index
-                           ,"X-Max-Chunks": file.maxChunks
+                            "X-File-Name": data.file.name
+                           ,"X-File-Size": data.file.size
+                           ,"X-Index": data.index
+                           ,"X-Max-Chunks": data.chunksTotal
                         }
                     }
                 )
             }
-
+           ,getFile: function(assetId){
+                return $http.get(cameo.restApi+"/getFile/"+assetId)
+            }
         };
     });
 })

@@ -78,7 +78,7 @@ object Application extends Controller with MongoController {
       }
   }
 
-  def sendFileChunks(assetId: String) = Action.async(parse.tolerantJson(256 * 1024)) {
+  def sendFileChunks(assetId: String) = Action.async(parse.tolerantJson(512 * 1024)) {
     request => {
       val fileName = request.headers.get("X-File-Name")
       val maxChunks = request.headers.get("X-Max-Chunks")
