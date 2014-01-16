@@ -9,8 +9,6 @@ import play.modules.reactivemongo.MongoController
 import reactivemongo.api.gridfs.GridFS
 import scala.util.Random
 import reactivemongo.bson.BSONObjectID
-import play.api.libs.json
-import play.api.Logger
 
 
 object Application extends Controller with MongoController {
@@ -127,19 +125,16 @@ object Application extends Controller with MongoController {
 
         case Some(fileMeta) => {
 
-          val oid = ( fileMeta.chunks \ chunkIndex ).asOpt[String].getOrElse("")
+          val oid = (fileMeta.chunks \ chunkIndex).asOpt[String].getOrElse("")
 
           FileChunk.col.find(Json.obj("_id" -> Json.obj("$oid" -> oid))).one[FileChunk].map {
             case None => NotFound("invalid oid")
             case Some(chunk) =>
               Ok(Json.toJson(chunk))
           }
-
         }
       }
-
   }
-
 
   def staticAssets(path: String, file: String, foo: String) =
     controllers.Assets.at(path, file)

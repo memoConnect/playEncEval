@@ -1,11 +1,12 @@
 'use strict';
-define(['app','_v/cryptojs/aes','service/cryptoService'], function (app) {
-    app.register.controller('CryptoJsCtrl', ['$scope', 'Crypto', function ($scope, Crypto) {
+define(['app','_v/cryptojs/aes','service/cryptoService', 'service/benchmarkService'], function (app) {
+    app.register.controller('CryptoJsCtrl', ['$scope', 'Crypto', 'Benchmark', function ($scope, Crypto, Benchmark) {
+
         $scope.time = {encrypt:0,decrypt:0};
 
         $scope.formData = {
             key: Crypto.genKey()
-           ,plainText: Crypto.getLoremIpsum()
+           ,plainText: Crypto.getLoremIpsum(1)
         };
         $scope.placeholder = {
             key: "PrivateKey"
@@ -30,5 +31,9 @@ define(['app','_v/cryptojs/aes','service/cryptoService'], function (app) {
             $scope.formData.decrypt = decrypt.toString(CryptoJS.enc.Utf8);
             $scope.time.decrypt = Crypto.benchmarkEnd();
         };
+
+        $scope.benchmark = function() {
+            Benchmark.run($scope)
+        }
     }]);
 });

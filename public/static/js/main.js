@@ -18,6 +18,7 @@ require.config({
        ,'MovableCtrl': 'controller/movable_ctrl'
        ,'CryptoJsCtrl': 'controller/cryptojs_ctrl'
        ,'OpenPgpJsCtrl': 'controller/openpgpjs_ctrl'
+       ,'SJCLCtrl': 'controller/sjcl_ctrl'
     },
     packages: [
         {

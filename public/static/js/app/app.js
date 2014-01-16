@@ -29,6 +29,10 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
                 templateUrl: 'static/tpl/cryptojs.html',
                 controller: 'CryptoJsCtrl'
             })).
+            when('/sjcl', angularAMD.route({
+                templateUrl: 'static/tpl/sjcl.html',
+                controller: 'SJCLCtrl'
+            })).
             when('/openpgpjs', angularAMD.route({
                 templateUrl: 'static/tpl/openpgpjs.html',
                 controller: 'OpenPgpJsCtrl'

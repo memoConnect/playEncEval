@@ -25,7 +25,7 @@ define(['app','service/apiService','service/cryptoService'
             };
             $scope.formData = {
                 key: Crypto.genKey()
-               ,plainText: Crypto.getLoremIpsum()
+               ,plainText: Crypto.getLoremIpsum(1)
             };
             $scope.api = {state:"not called yet",res:{}};
             $scope.crypto = {encrypt:"",decrypt:""};
@@ -324,5 +324,6 @@ define(['app','service/apiService','service/cryptoService'
                         })
                 }
             };
+
         }]);
 });
