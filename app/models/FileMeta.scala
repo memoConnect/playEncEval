@@ -16,7 +16,8 @@ case class FileMeta(
                      chunks: JsObject,
                      fileName: String,
                      maxChunks: Int,
-                     fileSize: Int
+                     fileSize: Int,
+                     fileType: String
                      )
 
 object FileMeta {

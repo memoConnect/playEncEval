@@ -11,6 +11,7 @@
     <section>
         <button ng-click="sendFile()">send chunks</button>
         <progress value="{{progress}}" max="{{chunksTotal}}"></progress> {{percent}}%<br />
+        <pre ng-show="Util.objLen(file) > 0">{{Util.prettify(file)}}</pre>
         <pre ng-show="Util.objLen(apiError) > 0">Api Error:{{apiError}}</pre>
     </section>
 </section>

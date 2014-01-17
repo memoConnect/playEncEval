@@ -20,14 +20,15 @@ define(['app','angular-resource'], function (app) {
                         headers:{
                             "X-File-Name": data.file.name
                            ,"X-File-Size": data.file.size
+                           ,"X-File-Type": data.file.type
                            ,"X-Index": data.index
                            ,"X-Max-Chunks": data.chunksTotal
                         }
                     }
                 )
             }
-           ,getFile: function(assetId){
-                return $http.get(cameo.restApi+"/getFile/"+assetId)
+           ,getFile: function(assetId, chunkId){
+                return $http.get(cameo.restApi+"/getFile/"+assetId+(angular.isDefined(chunkId)?"/"+chunkId:""))
             }
         };
     });

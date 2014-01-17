@@ -1,11 +1,12 @@
 'use strict';
-define(['app','_s/utilService','_s/apiService'], function (app) {
+define(['app','_s/utilService','_s/apiService','_v/filesaver/filesaver','_v/base64_decode'], function (app) {
     app.register.controller('FileApiCtrl', ['$scope', function($scope){}]);
 
     app.register.controller('SendFileCtrl', ['$rootScope', '$scope', 'Api', 'Util',
     function($rootScope, $scope, Api, Util){
         $scope.Util = Util;
 
+        $scope.file = {};
         $scope.fileSize = 0;
         $scope.percent = 0;
         $scope.progress = 0;
@@ -29,10 +30,13 @@ define(['app','_s/utilService','_s/apiService'], function (app) {
         $scope.calcChunkSize = function(event){
             $scope.fileSize = event.target.files[0].size;
             $scope.chunksTotal = Math.ceil($scope.fileSize / ($scope.chunkSize*1024));
+            $scope.percent = 0;
+            $scope.progress = 0;
         };
 
         $scope.sendFile = function(){
             // calculate the number of slices
+            $scope.assetId = 0;
             $scope.apiError = {};
             $scope.chunksTotal = Math.ceil($scope.fileSize / ($scope.chunkSize*1024));
             $scope.chunksQueue = $scope.chunksTotal;
@@ -127,16 +131,7 @@ define(['app','_s/utilService','_s/apiService'], function (app) {
                 element.bind("change", function (changeEvent) {
                     scope.$apply(function () {
                         scope.fileread = changeEvent.target.files[0];
-                        // or all selected files:
-                        // scope.fileread = changeEvent.target.files;
                     });
-                    var reader = new FileReader();
-                    reader.onload = function (loadEvent) {
-                        scope.$apply(function () {
-                            scope.fileread.base = loadEvent.target.result;
-                        });
-                    };
-                    reader.readAsDataURL(changeEvent.target.files[0]);
                 });
             }
         }
@@ -146,18 +141,65 @@ define(['app','_s/utilService','_s/apiService'], function (app) {
     function($scope, Api, Util){
         $scope.Util = Util;
 
-        $scope.assetId = 117850;
+        $scope.assetId = 0;
         $scope.file = {};
 
         $scope.$on("SendFileCtrl.assetIdChanged",function(event, assetId){
             $scope.assetId = assetId;
         });
 
+        var file = "";
+
         $scope.getFile = function(){
+            file = "";
+
             Api.getFile($scope.assetId).success(function(json){
                 $scope.file = json;
+                // pull first chunk
+                getChunk(0);
             });
         };
+
+        function b64toBlob(byteCharacters, contentType, sliceSize) {
+            contentType = contentType || '';
+            sliceSize = sliceSize || 512;
+
+            var byteArrays = [];
+
+            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                var byteNumbers = new Array(slice.length);
+                for (var i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                var byteArray = new Uint8Array(byteNumbers);
+
+                byteArrays.push(byteArray);
+            }
+
+        return new Blob(byteArrays, {type: contentType});
+        }
+
+        function getChunk(index){
+            Api.getFile($scope.assetId, index).success(function(json){
+                file += atob(json.chunk.replace('data:;base64,',''));
+                if(index+1 < $scope.file.maxChunks){
+                    getChunk(index+1);
+                } else {
+                    saveFile();
+                }
+            });
+        }
+
+        function saveFile(){
+            saveAs(
+                b64toBlob(file, $scope.file.fileType)
+               ,$scope.file.fileName
+            );
+        }
+
     }]);
 });
 

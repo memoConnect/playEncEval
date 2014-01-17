@@ -55,9 +55,10 @@ object Application extends Controller with MongoController {
       val fileName = request.headers.get("X-File-Name")
       val maxChunks = request.headers.get("X-Max-Chunks")
       val fileSize = request.headers.get("X-File-Size")
+      val fileType = request.headers.get("X-File-Type")
       val chunkIndex = request.headers.get("X-Index").get
 
-      if (fileName.isEmpty || maxChunks.isEmpty || fileSize.isEmpty) {
+      if (fileName.isEmpty || maxChunks.isEmpty || fileSize.isEmpty || fileType.isEmpty) {
         BadRequest("Header information missing.")
       }
       else {
@@ -65,7 +66,7 @@ object Application extends Controller with MongoController {
         val objectId = BSONObjectID.generate.stringify
         val objJson = Json.obj("_id" -> Json.obj("$oid" -> objectId))
 
-        val fileMeta = new FileMeta(assetId, Json.obj(chunkIndex -> objectId), fileName.get, Integer.parseInt(maxChunks.get), Integer.parseInt(fileSize.get))
+        val fileMeta = new FileMeta(assetId, Json.obj(chunkIndex -> objectId), fileName.get, Integer.parseInt(maxChunks.get), Integer.parseInt(fileSize.get), fileType.get)
 
         request.body.validate[FileChunk].map {
           chunk =>
@@ -83,12 +84,13 @@ object Application extends Controller with MongoController {
       val fileName = request.headers.get("X-File-Name")
       val maxChunks = request.headers.get("X-Max-Chunks")
       val fileSize = request.headers.get("X-File-Size")
+      val fileType = request.headers.get("X-File-Type")
       val chunkIndex = request.headers.get("X-Index").get
 
       val objectId = BSONObjectID.generate.stringify
       val objJson = Json.obj("_id" -> Json.obj("$oid" -> objectId))
 
-      if (fileName.isEmpty || maxChunks.isEmpty || fileSize.isEmpty) {
+      if (fileName.isEmpty || maxChunks.isEmpty || fileSize.isEmpty || fileType.isEmpty) {
         Future.successful(BadRequest("Header information missing."))
       } else {
         FileMeta.col.find(Json.obj("assetId" -> assetId)).one[FileMeta].map {
