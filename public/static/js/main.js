@@ -19,6 +19,8 @@ require.config({
        ,'CryptoJsCtrl': 'controller/cryptojs_ctrl'
        ,'OpenPgpJsCtrl': 'controller/openpgpjs_ctrl'
        ,'SJCLCtrl': 'controller/sjcl_ctrl'
+
+       ,'LocalStorageCtrl': 'controller/localstorage_ctrl'
     },
     packages: [
         {
