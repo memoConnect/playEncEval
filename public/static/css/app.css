@@ -1,3 +1,17 @@
 body {padding:20px;text-align:center}
 pre {text-align:left}
 .view-navi,.view-container{width:400px;margin:0 auto}
+
+
+.fl {float:left;position:relative}
+.fr {float:right;position:relative}
+
+.mr20 {margin-right:20px}
+.mb20 {margin-bottom:20px}
+.mb40 {margin-bottom:40px}
+
+label {width:100px;margin-right:10px}
+
+.localStorageOK {color:#4cae4c}
+.localStorageFail {color:#ac2925}
+.storageForm label {width:40px;margin-right:10px}
