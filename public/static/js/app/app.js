@@ -37,6 +37,10 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
                 templateUrl: 'static/tpl/openpgpjs.html',
                 controller: 'OpenPgpJsCtrl'
             })).
+            when('/localstorage', angularAMD.route({
+                templateUrl: "static/tpl/localstorage.html",
+                controller: "LocalStorageCtrl" // requireJs Name
+            })).
             otherwise({
                 redirectTo: '/home'
             });

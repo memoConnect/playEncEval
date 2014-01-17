@@ -1,5 +1,5 @@
 'use strict';
-define(['app','_v/openpgpjs/openpgpjs.min','service/localStorageService','service/cryptoService'], function (app, openpgp) {
+define(['app','_v/openpgpjs/openpgpjs.min','_s/localStorageService','_s/cryptoService'], function (app, openpgp) {
     app.register.controller('OpenPgpJsCtrl', ['$scope', 'LocalStorage', 'Crypto', function ($scope, LocalStorage, Crypto) {
         $scope.message = "";
 
