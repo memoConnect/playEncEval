@@ -1,6 +1,6 @@
 'use strict';
 var cameo = {
-    restApi: "http://localhost:9000/api"
+    restApi: "http://"+location.host+"/api"
    ,token: null
 };
 define(['angularAMD', 'angular-route'], function (angularAMD) {

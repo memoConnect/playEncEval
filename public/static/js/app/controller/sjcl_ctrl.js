@@ -11,10 +11,9 @@ define(['app','_v/sjcl/main','service/cryptoService', 'service/benchmarkService'
     app.register.controller('SJCLCtrl', ['$scope','Crypto', 'Benchmark', function ($scope, Crypto, Benchmark) {
 
         $scope.time = {encrypt:0,decrypt:0};
-        $scope.aesSize = 256;
         $scope.formData = {
             key: Crypto.genKey()
-            ,plainText: Crypto.getLoremIpsum(1)
+           ,plainText: Crypto.getLoremIpsum(1)
         };
         $scope.placeholder = {
             key: "PrivateKey"
@@ -26,8 +25,7 @@ define(['app','_v/sjcl/main','service/cryptoService', 'service/benchmarkService'
         };
 
         $scope.encrypt = function(){
-
-            var parameters = { ks: 256 }
+            var parameters = { ks: 256 };
 
             $scope.formData.encrypt = "";
             Crypto.benchmarkStart();

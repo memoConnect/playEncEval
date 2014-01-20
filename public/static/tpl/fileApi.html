@@ -1,18 +1,23 @@
 <h2>Chunked Uploader</h2>
+<section ng-controller="CryptoCtrl">
+    <h3>Crypto</h3>
+    <input type="text" ng-model="key" ng-change="updateKey()" value="" />
+    <button ng-click="genKey()">generate</button>
+</section>
 <section ng-controller="SendFileCtrl">
     <h3>SendFileCtrl</h3>
     <span class="label">chunkSize</span>
-    <input type="text" ng-model="chunkSize" ng-keyup="checkEmpty(1)" value="" /> * 1024 = {{bytesToSize(chunkSize*1024)}}
+    <input type="text" ng-model="chunks.size" ng-keyup="checkEmpty(1)" value="" /> * 1024 = {{Util.bytesToString(chunks.size*1024)}}
     <br/>
 
-    <input type="file" name="file" fileread="file" onchange="angular.element(this).scope().calcChunkSize(event)" placeholder="placeholder.file" /><br />
-    fileSize: {{bytesToSize(fileSize)}} / chunksTotal: {{ chunksTotal }} / inQueue: {{chunksQueue}}<br />
+    <input type="file" name="file" ng-upload="file" onchange="angular.element(this).scope().calcChunkSize(event)" placeholder="placeholder.file" /><br />
+    fileSize: {{Util.bytesToString(fileSize)}} / chunksTotal: {{ chunks.total }} / inQueue: {{chunks.queue}}<br />
     <hr>
     <section>
         <button ng-click="sendFile()">send chunks</button>
-        <progress value="{{progress}}" max="{{chunksTotal}}"></progress> {{percent}}%<br />
-        <pre ng-show="Util.objLen(file) > 0">{{Util.prettify(file)}}</pre>
-        <pre ng-show="Util.objLen(apiError) > 0">Api Error:{{apiError}}</pre>
+        <progress value="{{chunks.processed}}" max="{{chunks.total}}"></progress> {{chunks.percent}}%<br />
+        <pre ng-show="Util.objLen(file) > 0">{{Util.prettify(file)}} sliceType: {{sliceType}} / uploadeState: {{uploadState}}</pre>
+        <div ng-show="time != ''">Time to upload/encrypt: {{time}}</div>
     </section>
 </section>
 <hr>
@@ -20,7 +25,10 @@
     <h3>GetFileCtrl</h3>
     <section>
         <input type="text" ng-model="assetId" value="" />
-        <button ng-click="getFile()">get chunks</button>
+        <button ng-click="getFile()">get chunks</button><br />
+        <progress value="{{chunks.processed}}" max="{{chunks.total}}"></progress> {{chunks.percent}}%<br />
+        chunksTotal: {{ chunks.total }} / inQueue: {{chunks.queue}}
     </section>
-    <pre ng-show="Util.objLen(file) > 0">{{Util.prettify(file)}}</pre>
+    <pre ng-show="Util.objLen(file) > 0">file type: {{file.fileType}} / name: {{file.fileName}} / size: {{Util.bytesToString(file.fileSize)}}</pre>
+    <div ng-show="time != ''">Time to decrypt/rechunk: {{time}}</div>
 </section>

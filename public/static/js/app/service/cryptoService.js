@@ -1,57 +1,8 @@
 'use strict';
-define(['app'], function (app) {
+define(['app','_s/utilService'], function (app) {
     app.register.factory('Crypto',
-        function(){
-            var startTime
-
-            function getRandomInt (min, max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            }
-
-            function secondsToString(seconds){
-                var numyears = Math.floor(seconds / 31536000);
-                var numdays = Math.floor((seconds % 31536000) / 86400);
-                var numhours = Math.floor(((seconds % 31536000) % 86400) / 3600);
-                var numminutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
-                var numseconds = (((seconds % 31536000) % 86400) % 3600) % 60;
-                //return numyears + " y " +  numdays + " d " + numhours + " h " + numminutes + " m " + numseconds + " s";
-                return numhours + " h " + numminutes + " m " + numseconds + " s";
-            }
-
-            function millisecondsToStr(milliseconds) {
-                // TIP: to find current time in milliseconds, use:
-                // var  current_time_milliseconds = new Date().getTime();
-
-                // This function does not deal with leap years, however,
-                // it should not be an issue because the output is aproximated.
-
-                function numberEnding (number) {
-                    return ""//(number > 1) ? '\'s' : '';
-                }
-
-                var temp = milliseconds / 1000;
-                var years = Math.floor(temp / 31536000);
-                if (years) {
-                    return years + 'y' + numberEnding(years);
-                }
-                var days = Math.floor((temp %= 31536000) / 86400);
-                if (days) {
-                    return days + 'd' + numberEnding(days);
-                }
-                var hours = Math.floor((temp %= 86400) / 3600);
-                if (hours) {
-                    return hours + 'h' + numberEnding(hours);
-                }
-                var minutes = Math.floor((temp %= 3600) / 60);
-                if (minutes) {
-                    return minutes + 'm' + numberEnding(minutes);
-                }
-                var seconds = temp % 60;
-                if (seconds) {
-                    return seconds + 's' + numberEnding(seconds);
-                }
-                return '< s'; //'just now' //or other string you like;
-            }
+        function(Util){
+            var startTime;
 
             return {
                 genKey: function(length){
@@ -63,7 +14,7 @@ define(['app'], function (app) {
                             k += "-";
                         }
                         for (var j = 0; j < 5; j++) {
-                            k += String.fromCharCode(charA + getRandomInt(1,24));
+                            k += String.fromCharCode(charA + Util.getRandomInt(1,24));
                         }
                     }
                     return k;
@@ -73,7 +24,7 @@ define(['app'], function (app) {
                 }
                ,benchmarkEnd: function(){
                     //return secondsToString(((new Date).getTime() - startTime.getTime())/1000);
-                    return millisecondsToStr(((new Date).getTime() - startTime.getTime()));
+                    return Util.millisecondsToStr(((new Date).getTime() - startTime.getTime()));
                 }
                ,getLoremIpsum: function(length){
                     var text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.  "+

@@ -1,6 +1,6 @@
 'use strict';
 var prng;
-define(['app','service/apiService','service/cryptoService'
+define(['app','_s/apiService','_s/cryptoService'
     ,'_v/scrypt/aes'
     ,'_v/scrypt/entropy'
     ,'_v/scrypt/aesprng'

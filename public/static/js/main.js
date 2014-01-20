@@ -1,7 +1,8 @@
 require.config({
-    baseUrl: "static/js/app",
+    baseUrl: "static/js/app"
     // alias libraries paths
-    paths: {
+   ,urlArgs: "bust=" + (new Date()).getTime()
+   ,paths: {
         'angular': '../vendor/angular/angular.min'
        ,'angular-route': '../vendor/angular/angular-route.min'
        ,'angular-resource': '../vendor/angular/angular-resource.min'
@@ -21,8 +22,8 @@ require.config({
        ,'SJCLCtrl': 'controller/sjcl_ctrl'
 
        ,'LocalStorageCtrl': 'controller/localstorage_ctrl'
-    },
-    packages: [
+    }
+   ,packages: [
         {
             name: '_v'
            ,location: '../vendor'
@@ -31,12 +32,12 @@ require.config({
             name: '_s'
            ,location: 'service'
         }
-    ],
+    ]
     // Add angular modules that does not support AMD out of the box, put it in a shim
-    shim: {
+   ,shim: {
         'angularAMD': ['angular']
        ,'angular-route': ['angular']
-    },
+    }
     // kick start application
-    deps: ['app']
+   ,deps: ['app']
 });
