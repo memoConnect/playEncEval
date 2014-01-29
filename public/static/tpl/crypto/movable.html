@@ -1,4 +1,7 @@
-<form name="crypt" ng-controller="SJCLCtrl">
+<form name="crypt" ng-controller="CryptMovableCtrl">
+    <h1><a href="http://www.movable-type.co.uk/scripts/aes.html" target="_blank">library link</a> - only aes</h1>
+
+    <br />
 
     <span class="label">key</span>
     <input type="text" ng-model="formData.key" name="key" value="" placeholder="{{placeholder.key}}" class="input-xlarge" />
@@ -25,4 +28,6 @@
     <br />
 
     <pre>Time: {{time}}<br /></pre>
+
+
 </form>

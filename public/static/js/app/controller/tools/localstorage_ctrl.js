@@ -2,8 +2,8 @@
 
 define(['app','_s/localStorageService'], function (app) {
 
-    app.register.controller('LocalStorageCtrl',['$scope','LocalStorageService',function($scope,LocalStorageService){
-        $scope.checkLocalStorageMessage = 'LocalStorage nicht verfügbar!';
+    app.register.controller('ToolLocalStorageCtrl',['$scope','LocalStorageService',function($scope,LocalStorageService){
+        $scope.checkLocalStorageMessage = 'nicht verfügbar!';
 
         $scope.refreshKeys = function(){
             $scope.storageKeys = LocalStorageService.getAllKeys();
@@ -11,7 +11,7 @@ define(['app','_s/localStorageService'], function (app) {
 
         $scope.checkStorage = function(){
             if(LocalStorageService.check() !== false){
-                $scope.checkLocalStorageMessage = 'LocalStorage ist verfügbar!';
+                $scope.checkLocalStorageMessage = 'ist verfügbar!';
                 $scope.$broadcast('refreshKeys');
             }
         };
@@ -22,7 +22,7 @@ define(['app','_s/localStorageService'], function (app) {
             }
 
             return false;
-        }
+        };
 
         $scope.clearStorage = function(){
             LocalStorageService.clearAll();

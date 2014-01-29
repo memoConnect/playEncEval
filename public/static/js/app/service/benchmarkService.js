@@ -7,7 +7,7 @@
  */
 
 
-define(['app', 'service/cryptoService'], function (app) {
+define(['app', '_s/cryptoService'], function (app) {
     app.register.factory('Benchmark',
         function (Crypto) {
 

@@ -1,0 +1,39 @@
+<div class="page-header">
+    <h2>HTML5 Canvas Captcha</h2>
+    <a href="http://risingstarweb.com.au/codegrape/html5-canvas-captcha/">Demo</a>
+</div>
+<div class="alert alert-danger">
+    das htmltag &lt;canvas&gt; bekommt via css einen "strip.gif" hintergrund.<br />
+    dieser fließt hier nicht mit ins blob sprich is nicht im base64 enthalten
+</div>
+<section class="panel panel-default" ng-controller="CapCanvasCtrl">
+    <div class="panel-heading">
+        <h3 class="panel-title">canvas</h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form" ng-init="create()">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">pass</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="text" ng-model="pass" ng-keyup="update()" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">image</label>
+                <div class="col-sm-5">
+                    <div class="thumbnail">
+                        <canvas id="canvas" width="100" height="37"></canvas>
+                    </div>
+                    <button type="button" class="btn btn-primary" ng-click="refresh()">refresh</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">blob</label>
+                <div class="col-sm-5">
+                    <textarea class="form-control">{{blob}}</textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+

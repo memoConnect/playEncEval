@@ -8,36 +8,37 @@ require.config({
        ,'angular-resource': '../vendor/angular/angular-resource.min'
        ,'angular-cookies': '../vendor/angular/angular-cookies.min'
 
+       ,'jquery': '../vendor/jquery/jquery.min'
+       ,'bootstrap': '../vendor/bootstrap/bootstrap.min'
+
        ,'angularAMD': '../vendor/requirejs/angularAMD'
        ,'ngload': '../vendor/requirejs/ngload'
 
        ,'HomeCtrl': 'controller/home_ctrl'
 
-       ,'FileApiCtrl': 'controller/fileapi_ctrl'
+       ,'CryptJavascryptCtrl': 'controller/crypto/javascrypt_ctrl'
+       ,'CryptMovableCtrl': 'controller/crypto/movable_ctrl'
+       ,'CryptCryptoJsCtrl': 'controller/crypto/cryptojs_ctrl'
+       ,'CryptOpenPgpJsCtrl': 'controller/crypto/openpgpjs_ctrl'
+       ,'CryptSJCLCtrl': 'controller/crypto/sjcl_ctrl'
 
-       ,'JavascryptCtrl': 'controller/javascrypt_ctrl'
-       ,'MovableCtrl': 'controller/movable_ctrl'
-       ,'CryptoJsCtrl': 'controller/cryptojs_ctrl'
-       ,'OpenPgpJsCtrl': 'controller/openpgpjs_ctrl'
-       ,'SJCLCtrl': 'controller/sjcl_ctrl'
+       ,'ToolFileApiCtrl': 'controller/tools/fileapi_ctrl'
+       ,'ToolLocalStorageCtrl': 'controller/tools/localstorage_ctrl'
 
-       ,'LocalStorageCtrl': 'controller/localstorage_ctrl'
+       ,'CapCaptchajsCtrl': 'controller/captcha/captchajs_ctrl'
+       ,'CapCanvasCtrl': 'controller/captcha/canvas_ctrl'
+       ,'CapMotionCtrl': 'controller/captcha/motion_ctrl'
     }
    ,packages: [
-        {
-            name: '_v'
-           ,location: '../vendor'
-        }
-       ,{
-            name: '_s'
-           ,location: 'service'
-        }
+        {name: '_v', location: '../vendor'}
+       ,{name: '_s', location: 'service'}
     ]
     // Add angular modules that does not support AMD out of the box, put it in a shim
    ,shim: {
         'angularAMD': ['angular']
        ,'angular-route': ['angular']
+       ,'bootstrap': ['jquery']
     }
     // kick start application
-   ,deps: ['app']
+   ,deps: ['bootstrap', 'app']
 });

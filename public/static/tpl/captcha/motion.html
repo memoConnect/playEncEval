@@ -1,0 +1,62 @@
+<div class="page-header">
+    <h2>MotionCaptcha</h2>
+    <h5>
+        <a href="https://github.com/josscrowcroft/MotionCAPTCHA" target="_blank">Github</a> |
+        <a href="http://www.josscrowcroft.com/demos/motioncaptcha/" target="_blank">Demo</a>
+    </h5>
+</div>
+
+<section class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            send message
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form" id="mc-form">
+            <div class="form-group">
+                <label rel="name" class="col-sm-1 control-label">
+                    captcha
+                    <span class="label" ng-class="{'label-success':captureState,'label-danger':!captureState}">state</span>
+                </label>
+                <div class="col-sm-5" id="mc">
+                    <p>Please draw the shape in the box to submit the form: (<a onclick="window.location.reload()" href="#" title="Click for a new shape">new shape</a>)</p>
+                    <div class="thumbnail">
+                        <canvas id="mc-canvas" width="220" height="154">
+                            Your browser doesn't support the canvas element - please visit in a modern browser.
+                        </canvas>
+                    </div>
+                    <input type="hidden" id="mc-action" value="http://josscrowcroft.com/projects/motioncaptcha-jquery-plugin/" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label rel="name" class="col-sm-1 control-label">
+                    blob
+                </label>
+                <div class="col-sm-5">
+                    <textarea name="blob" type="text" class="form-control" rows="3" ng-model="blob"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label rel="name" class="col-sm-1 control-label">name</label>
+                <div class="col-sm-5">
+                    <input name="name" type="text" class="form-control" placeholder="your name &hellip;">
+                </div>
+            </div>
+            <div class="form-group">
+                <label rel="name" class="col-sm-1 control-label">name</label>
+                <div class="col-sm-5">
+                    <input name="email" type="email" class="form-control" placeholder="your email address &hellip;">
+                </div>
+            </div>
+            <div class="form-group">
+                <label rel="name" class="col-sm-1 control-label">text</label>
+                <div class="col-sm-5">
+                    <textarea name="email" type="email" class="form-control" placeholder="your message &hellip;" rows="3"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

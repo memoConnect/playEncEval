@@ -1,0 +1,45 @@
+<div class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">EncEval</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ng-class="isTabActive('home')"><a href="#/home">Home</a></li>
+                <li class="dropdown" ng-class="isTabActive('crypto')">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Crypto <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li ng-class="isTabActive('sjcl')"><a href="#/crypto/sjcl">Stanford</a></li>
+                        <li ng-class="isTabActive('openpgp')"><a href="#/crypto/openpgpjs">OpenPgpJS</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">other librarys</li>
+                        <li ng-class="isTabActive('javascrypt')"><a href="#/crypto/javascrypt">Javascrypt</a></li>
+                        <li ng-class="isTabActive('movable')"><a href="#/crypto/movable">Movable</a></li>
+                        <li ng-class="isTabActive('cryptojs')"><a href="#/crypto/cryptojs">CryptoJS</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown ng-class="isTabActive('tools')">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li ng-class="isTabActive('localstorage')"><a href="#/tools/localstorage">LocalStorage</a></li>
+                        <li ng-class="isTabActive('fileapi')"><a href="#/tools/fileapi">FileApi</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" ng-class="isTabActive('captcha')">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Captcha <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li ng-class="isTabActive('captchajs')"><a href="#/captcha/captchajs">Captcha.js</a></li>
+                        <li ng-class="isTabActive('canvas')"><a href="#/captcha/canvas">HTML5 Canvas</a></li>
+                        <li ng-class="isTabActive('motion')"><a href="#/captcha/motion">MotionCaptcha</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

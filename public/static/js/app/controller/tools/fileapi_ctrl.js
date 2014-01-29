@@ -4,23 +4,11 @@ define(['app'
    ,'_s/apiService'
    ,'_s/cryptoService'
    ,'_v/filesaver/filesaver'
-   ,'_v/sjcl/main'], function (app) {
-    app.register.directive('ngUpload', [function () {
-        return {
-            scope: {
-                ngUpload: "="
-            },
-            link: function (scope, element, attributes) {
-                element.bind("change", function (changeEvent) {
-                    scope.$apply(function () {
-                        scope.ngUpload = changeEvent.target.files[0];
-                    });
-                });
-            }
-        }
-    }]);
+   ,'_v/sjcl/main'
+   ,'directive/ngUpload'
+], function (app) {
     // root controller for the whole template
-    app.register.controller('FileApiCtrl', ['$scope', function($scope){}]);
+    app.register.controller('ToolFileApiCtrl', ['$scope', function($scope){}]);
     // crypto controller manage the key
     app.register.controller('CryptoCtrl',['$rootScope', '$scope', 'Crypto',
     function($rootScope, $scope, Crypto){
@@ -195,7 +183,6 @@ define(['app'
             $scope.chunks.percent = Math.round($scope.chunks.processed/$scope.chunks.total * 100);
             sendChunks(index);
         }
-
     }]);
 
     app.register.controller('GetFileCtrl', ['$rootScope', '$scope', 'Api', 'Util', 'Crypto',

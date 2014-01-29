@@ -1,7 +1,9 @@
 'use strict';
 define(['app','_v/openpgpjs/openpgpjs.min','_s/localStorageService','_s/cryptoService'], function (app, openpgp) {
-    app.register.controller('OpenPgpJsCtrl', ['$scope', 'LocalStorage', 'Crypto', function ($scope, LocalStorage, Crypto) {
+    app.register.controller('CryptOpenPgpJsCtrl', ['$scope', '$timeout', 'LocalStorage', 'Crypto', function ($scope, $timeout, LocalStorage, Crypto) {
         $scope.message = "";
+        $scope.genBtn = "generate";
+        $scope.stateBusy = false;
 
         $scope.email = "";
         $scope.passphrase = "";
@@ -13,23 +15,25 @@ define(['app','_v/openpgpjs/openpgpjs.min','_s/localStorageService','_s/cryptoSe
         $scope.pubKey = "";
 
         $scope.generateKeyPair = function(){
-            var data;
 
-            clearKeys();
+            $scope.genBtn = "please wait...";
+            $scope.stateBusy = true;
 
-            if(html5_local_storage() !== true){
-                $scope.message = "LocalStorage not available!";
-                return false;
-            }
+            $timeout(function(){
+                var data;
 
-            if(checkBrowserRandomValues() !== true){
-                $scope.message = "\"window.crypto.getRandomValues\" not available!";
-                return false;
-            }
+                clearKeys();
 
-            $scope.message = "Working in Progress.... ";
+                if(html5_local_storage() !== true){
+                    $scope.message = "LocalStorage not available!";
+                    return false;
+                }
 
-            try {
+                if(checkBrowserRandomValues() !== true){
+                    $scope.message = "\"window.crypto.getRandomValues\" not available!";
+                    return false;
+                }
+
                 Crypto.benchmarkStart();
 
                 data = openpgp.generateKeyPair($scope.keyType,$scope.numBits,$scope.email,$scope.passphrase);
@@ -47,10 +51,10 @@ define(['app','_v/openpgpjs/openpgpjs.min','_s/localStorageService','_s/cryptoSe
 
                 $scope.timer = Crypto.benchmarkEnd();
                 $scope.message = "Finished in " + $scope.timer;
+                $scope.genBtn = "generate";
+                $scope.stateBusy = false;
+            },1000);
 
-            } catch (e){
-                $scope.message = e;
-            }
             return true;
         };
 

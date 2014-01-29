@@ -1,0 +1,63 @@
+<div class="page-header">
+    <h2>Standford Library</h2>
+</div>
+
+<section class="panel panel-default" ng-controller="CryptSJCLCtrl">
+    <div class="panel-heading">
+        <h3 class="panel-title">encrypt & decrypt</h3>
+    </div>
+    <div class="panel-body">
+        <form name="crypt" class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="inputKey" class="col-sm-1 control-label">key</label>
+                <div class="col-sm-5">
+                    <input type="text" id="inputKey" class="form-control" ng-model="formData.key" name="key" value="" placeholder="{{placeholder.key}}" class="input-xlarge" />
+                </div>
+            </div>
+            <div class="form-group"><div class="col-sm-offset-1 col-sm-5">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="genKey()">generate</button>
+                keylength: {{formData.key.length}}<br />
+            </div></div>
+
+            <div class="form-group">
+                <label for="inputText" class="col-sm-1 control-label">text</label>
+                <div class="col-sm-5">
+                    <textarea ng-model="formData.plainText" id="inputText" name="text" placeholder="{{placeholder.plainText}}" class="form-control"></textarea>
+                    textlength: {{formData.plainText.length}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputCrypt" class="col-sm-1 control-label">
+                    encrypt
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="encrypt()">do it</button>
+                </label>
+                <div class="col-sm-5">
+                    <textarea ng-model="formData.encrypt" id="inputCrypt" name="text" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputDecrypt" class="col-sm-1 control-label">
+                    decrypt
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="decrypt()">do it</button>
+                </label>
+                <div class="col-sm-5">
+                    <textarea ng-model="formData.decrypt" id="inputDecrypt" name="text" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-5">
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="benchmark()">start benchmark</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">benchmark state</label>
+                <div class="col-sm-5">
+                    <pre>Time: {{Util.prettify(time)}}<br /></pre>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,78 @@
+<div class="page-header">
+    <h2>OpenPGP</h2>
+</div>
+<section class="panel panel-default" ng-init="load()">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Create Key Pair
+            <span class="label label-success" ng-show="time != ''">{{message}}</span>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label rel="email" class="col-sm-1 control-label">e-mail</label>
+                <div class="col-sm-5">
+                    <input name="email" type="text" ng-model="email" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label rel="passphrase" class="col-sm-1 control-label">passphrase</label>
+                <div class="col-sm-5">
+                    <input name="passphrase" type="text" ng-model="passphrase" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label rel="keyType" class="col-sm-1 control-label">keyType</label>
+                <div class="col-sm-5">
+                    <input name="keyType" type="number" ng-model="keyType" maxlength="3" class="form-control" readonly />
+                    1 = RSA
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label rel="numBits" class="col-sm-1 control-label">numBits</label>
+                <div class="col-sm-5">
+                    <input name="numBits" type="number" ng-model="numBits" maxlength="4" class="form-control" placeholder="2048" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-5">
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="generateKeyPair()" ng-disabled="stateBusy">{{genBtn}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="panel panel-default" ng-init="load()">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Localstorage
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label rel="privKey" class="col-sm-1 control-label">privateKey</label>
+                <div class="col-sm-5">
+                    <textarea name="privKey" class="form-control">{{privKey}}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label rel="pubKey" class="col-sm-1 control-label">publicKey</label>
+                <div class="col-sm-5">
+                    <textarea name="pubKey" class="form-control">{{pubKey}}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-5">
+                    <button class="btn btn-primary btn-sm" ng-click="clearStorage()">clear complete Storage</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

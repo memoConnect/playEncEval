@@ -8,7 +8,7 @@ define(['app','_s/apiService','_s/cryptoService'
     ,'_v/scrypt/md5'
     ,'_v/scrypt/armour'
     ,'_v/scrypt/utf-8'], function (app) {
-    app.register.controller('JavascryptCtrl', ['$scope', '$location', 'Api', 'Crypto',
+    app.register.controller('CryptJavascryptCtrl', ['$scope', '$location', 'Api', 'Crypto',
         function($scope, $location, Api, Crypto) {
             $scope.withoutApi = true;
             $scope.time = {encrypt:0,decrypt:0};

@@ -13,38 +13,64 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
                 templateUrl: 'static/tpl/home.html',
                 controller: 'HomeCtrl'
             })).
-            when('/fileApi', angularAMD.route({
-                templateUrl: 'static/tpl/fileApi.html',
-                controller: 'FileApiCtrl'
+            when('/crypto/javascrypt', angularAMD.route({
+                templateUrl: 'static/tpl/crypto/javascrypt.html',
+                controller: 'CryptJavascryptCtrl'
             })).
-            when('/javascrypt', angularAMD.route({
-                templateUrl: 'static/tpl/javascrypt.html',
-                controller: 'JavascryptCtrl'
+            when('/crypto/movable', angularAMD.route({
+                templateUrl: 'static/tpl/crypto/movable.html',
+                controller: 'CryptMovableCtrl'
             })).
-            when('/movable', angularAMD.route({
-                templateUrl: 'static/tpl/movable.html',
-                controller: 'MovableCtrl'
+            when('/crypto/cryptojs', angularAMD.route({
+                templateUrl: 'static/tpl/crypto/cryptojs.html',
+                controller: 'CryptCryptoJsCtrl'
             })).
-            when('/cryptojs', angularAMD.route({
-                templateUrl: 'static/tpl/cryptojs.html',
-                controller: 'CryptoJsCtrl'
+            when('/crypto/sjcl', angularAMD.route({
+                templateUrl: 'static/tpl/crypto/sjcl.html',
+                controller: 'CryptSJCLCtrl'
             })).
-            when('/sjcl', angularAMD.route({
-                templateUrl: 'static/tpl/sjcl.html',
-                controller: 'SJCLCtrl'
+            when('/crypto/openpgpjs', angularAMD.route({
+                templateUrl: 'static/tpl/crypto/openpgpjs.html',
+                controller: 'CryptOpenPgpJsCtrl'
             })).
-            when('/openpgpjs', angularAMD.route({
-                templateUrl: 'static/tpl/openpgpjs.html',
-                controller: 'OpenPgpJsCtrl'
+            when('/tools/localstorage', angularAMD.route({
+                templateUrl: "static/tpl/tools/localstorage.html",
+                controller: "ToolLocalStorageCtrl"
             })).
-            when('/localstorage', angularAMD.route({
-                templateUrl: "static/tpl/localstorage.html",
-                controller: "LocalStorageCtrl" // requireJs Name
+            when('/tools/fileapi', angularAMD.route({
+                templateUrl: 'static/tpl/tools/fileapi.html',
+                controller: 'ToolFileApiCtrl'
+            })).
+            when('/captcha/captchajs', angularAMD.route({
+                templateUrl: "static/tpl/captcha/captchajs.html",
+                controller: "CapCaptchajsCtrl"
+            })).
+            when('/captcha/canvas', angularAMD.route({
+                templateUrl: "static/tpl/captcha/canvas.html",
+                controller: "CapCanvasCtrl"
+            })).
+            when('/captcha/motion', angularAMD.route({
+                templateUrl: "static/tpl/captcha/motion.html",
+                controller: "CapMotionCtrl"
             })).
             otherwise({
                 redirectTo: '/home'
             });
         }]);
+
+    app.directive('navMenu', function () {
+        return {
+            restrict: 'A',
+            controller: ['$scope', '$route', '$window', '$location',
+            function ($scope, $route, $window, $location) {
+                $scope.isTabActive = function (tab) {
+                    if($route.current.$$route.originalPath.search(tab)>0)
+                        return "active";
+                };
+            }],
+            templateUrl: 'static/js/app/directive/tpl/navMenu.html'
+        };
+    });
 
     // Bootstrap Angular when DOM is ready
     angularAMD.bootstrap(app);

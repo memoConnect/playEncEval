@@ -1,0 +1,87 @@
+<div class="page-header">
+    <h2>Chunked Uploader</h2>
+</div>
+<section class="panel panel-default" ng-controller="CryptoCtrl">
+    <div class="panel-heading">
+        <h3 class="panel-title">crypto</h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-5">
+                    <input type="text" ng-model="key" ng-change="updateKey()" value="" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-5">
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="genKey()">generate</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<section class="panel panel-default" ng-controller="SendFileCtrl">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            send file
+            <strong ng-show="time != ''">Time to upload/encrypt: {{time}}</strong>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="inputChunkSize" class="col-sm-1 control-label">chunkSize</label>
+                <div class="col-sm-5">
+                    <input class="form-control" id="inputChunkSize" type="text" ng-model="chunks.size" ng-keyup="checkEmpty(1)" value="" />
+                    * 1024 = {{Util.bytesToString(chunks.size*1024)}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputFile" class="col-sm-1 control-label">file</label>
+                <div class="col-sm-5">
+                    <input class="form-control" id="inputFile" type="file" name="file" ng-upload="file" onchange="angular.element(this).scope().calcChunkSize(event)" placeholder="placeholder.file" />
+                    fileSize: {{Util.bytesToString(fileSize)}} / chunksTotal: {{ chunks.total }} / inQueue: {{chunks.queue}}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-5">
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="sendFile()">send chunks</button>
+                    <progress value="{{chunks.processed}}" max="{{chunks.total}}"></progress> {{chunks.percent}}%<br />
+
+                    <pre ng-show="Util.objLen(file) > 0">{{Util.prettify(file)}} sliceType: {{sliceType}} / uploadeState: {{uploadState}}</pre>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<section class="panel panel-default" ng-controller="GetFileCtrl">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            get file
+            <strong ng-show="time != ''">Time to upload/encrypt: {{time}}</strong>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="inputAssetId" class="col-sm-1 control-label">assetId</label>
+                <div class="col-sm-5">
+                    <input type="text" ng-model="assetId" class="form-control" id="inputAssetId" value="" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-5">
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="getFile()">get chunks</button>
+                    <progress value="{{chunks.processed}}" max="{{chunks.total}}"></progress> {{chunks.percent}}%
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">state & results</label>
+                <div class="col-sm-5">
+                    chunksTotal: {{ chunks.total }} / inQueue: {{chunks.queue}}
+                    <pre ng-show="Util.objLen(file) > 0">file type: {{file.fileType}} / name: {{file.fileName}} / size: {{Util.bytesToString(file.fileSize)}}</pre>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

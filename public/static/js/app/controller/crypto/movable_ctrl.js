@@ -1,9 +1,8 @@
 'use strict';
-define(['app','_v/cryptojs/aes','service/cryptoService', 'service/benchmarkService'], function (app) {
-    app.register.controller('CryptoJsCtrl', ['$scope', 'Crypto', 'Benchmark', function ($scope, Crypto, Benchmark) {
-
+define(['app','_v/movable/aes','service/cryptoService', 'service/benchmarkService'], function (app) {
+    app.register.controller('CryptMovableCtrl', ['$scope','Crypto', 'Benchmark', function ($scope, Crypto, Benchmark) {
         $scope.time = {encrypt:0,decrypt:0};
-
+        $scope.aesSize = 256;
         $scope.formData = {
             key: Crypto.genKey()
            ,plainText: Crypto.getLoremIpsum(1)
@@ -20,15 +19,14 @@ define(['app','_v/cryptojs/aes','service/cryptoService', 'service/benchmarkServi
         $scope.encrypt = function(){
             $scope.formData.encrypt = "";
             Crypto.benchmarkStart();
-            $scope.formData.encrypt = String(CryptoJS.AES.encrypt(String($scope.formData.plainText), String($scope.formData.key)));
+            $scope.formData.encrypt = Aes.Ctr.encrypt(String($scope.formData.plainText), String($scope.formData.key), $scope.aesSize);
             $scope.time.encrypt = Crypto.benchmarkEnd();
         };
 
         $scope.decrypt = function(){
             $scope.formData.decrypt = "";
             Crypto.benchmarkStart();
-            var decrypt = CryptoJS.AES.decrypt(String($scope.formData.encrypt), String($scope.formData.key));
-            $scope.formData.decrypt = decrypt.toString(CryptoJS.enc.Utf8);
+            $scope.formData.decrypt = Aes.Ctr.decrypt(String($scope.formData.encrypt), String($scope.formData.key), $scope.aesSize);
             $scope.time.decrypt = Crypto.benchmarkEnd();
         };
 

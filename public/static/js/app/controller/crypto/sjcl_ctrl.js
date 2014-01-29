@@ -1,15 +1,23 @@
+/**
+ * Created with IntelliJ IDEA.
+ * User: reimerei
+ * Date: 1/16/14
+ * Time: 2:39 PM
+ * To change this template use File | Settings | File Templates.
+ */
+
 'use strict';
-define(['app','_v/movable/aes','service/cryptoService', 'service/benchmarkService'], function (app) {
-    app.register.controller('MovableCtrl', ['$scope','Crypto', 'Benchmark', function ($scope, Crypto, Benchmark) {
+define(['app','_v/sjcl/main','_s/cryptoService', '_s/benchmarkService','_s/utilService'], function (app) {
+    app.register.controller('CryptSJCLCtrl', ['$scope', 'Crypto', 'Benchmark', 'Util', function ($scope, Crypto, Benchmark, Util) {
+        $scope.Util = Util;
         $scope.time = {encrypt:0,decrypt:0};
-        $scope.aesSize = 256;
         $scope.formData = {
             key: Crypto.genKey()
            ,plainText: Crypto.getLoremIpsum(1)
         };
         $scope.placeholder = {
             key: "PrivateKey"
-           ,plainText: "uncrypted message"
+            ,plainText: "uncrypted message"
         };
 
         $scope.genKey = function(){
@@ -17,16 +25,18 @@ define(['app','_v/movable/aes','service/cryptoService', 'service/benchmarkServic
         };
 
         $scope.encrypt = function(){
+            var parameters = { ks: 256 };
+
             $scope.formData.encrypt = "";
             Crypto.benchmarkStart();
-            $scope.formData.encrypt = Aes.Ctr.encrypt(String($scope.formData.plainText), String($scope.formData.key), $scope.aesSize);
+            $scope.formData.encrypt = sjcl.json.encrypt(String($scope.formData.key), String($scope.formData.plainText), parameters)
             $scope.time.encrypt = Crypto.benchmarkEnd();
         };
 
         $scope.decrypt = function(){
             $scope.formData.decrypt = "";
             Crypto.benchmarkStart();
-            $scope.formData.decrypt = Aes.Ctr.decrypt(String($scope.formData.encrypt), String($scope.formData.key), $scope.aesSize);
+            $scope.formData.decrypt = sjcl.decrypt(String($scope.formData.key), String($scope.formData.encrypt))
             $scope.time.decrypt = Crypto.benchmarkEnd();
         };
 

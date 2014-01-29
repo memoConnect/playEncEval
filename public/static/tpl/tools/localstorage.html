@@ -1,0 +1,53 @@
+<div class="page-header" ng-init="checkStorage();">
+    <h2>LocalStorage</h2>
+    <span class="label" ng-class="{'label-success':isLocalStorage(),'label-danger':!isLocalStorage()}">{{checkLocalStorageMessage}}</span>
+</div>
+
+<section class="panel panel-default" ng-controller="addFormKeyCtrl">
+    <div class="panel-heading">
+        <h3 class="panel-title">add keys</h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form" name="addForm" ng-submit="addStorageKey()" ng-controller="addFormKeyCtrl">
+            <div class="form-group">
+                <label rel="key" class="control-label col-sm-1">Key</label>
+                <div class="col-sm-5">
+                    <input name="key" type="text" required ng-model="key" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label rel="key" class="control-label col-sm-1">Value</label>
+                <div class="col-sm-5">
+                    <input name="value" type="text" required ng-model="value" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-5">
+                    <button class="btn btn-primary">save</button>
+                    <button onclick="reset();" class="btn btn-default">reset</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="panel panel-default" ng-controller="handleKeyCtrl">
+    <div class="panel-heading">
+        <h3 class="panel-title">LocalStorage KeyList</h3>
+    </div>
+    <div class="panel-body">
+        <div ng-repeat="key in storageKeys" class="repeated-item mb20">
+            <div class="item-key">
+                <span>{{key}}</span>
+                <button ng-click="showValue(key)" class="btn btn-default btn-sm">show</button>
+                <button ng-click="deleteKey(key)" class="btn btn-primary btn-sm">delete</button>
+            </div>
+        </div>
+        <div ng-show="currentValue != ''">
+            <h3>Value</h3>
+            <textarea class="form-control">{{currentValue}}</textarea>
+        </div>
+    </div>
+</section>
