@@ -7,12 +7,14 @@
         text: null,
         randomText: true,
         randomColours: true,
+        withoutValidate: false,
         width: 300,
         height: 200,
         colour1: null,
         colour2: null,
-        font: 'bold 48px "Comic Sans MS", cursive, sans-serif',
-        onSuccess: function () { alert('Correct!'); }
+        font: 'bold 30px "Comic Sans MS", cursive, sans-serif',
+        onSuccess: function(){ alert('Correct!'); },
+        afterBuild: function(){}
     };
 
     var CAPTCHA = function (config) {
@@ -21,34 +23,45 @@
 
         this._settings = $.extend({}, defaults, config || {});
 
-        this._container = $(this._settings.selector);
+        this._container = $(this._settings.selector).html('');
 
         var canvasWrapper = $('<div>').appendTo(this._container);
 
-        this._canvas = $('<canvas>').appendTo(canvasWrapper).width(this._settings.width).height(this._settings.height);
+        this._canvas = $('<canvas>').appendTo(canvasWrapper).
+            width(this._settings.width).height(this._settings.height).
+            click(function(){
+                that.generate();
+            });
 
-        var controlWrapper = $('<div>').appendTo(this._container);
+        if(!this._settings.withoutValidate){
+            var controlWrapper = $('<div>').appendTo(this._container);
 
-        this._input = $('<input>').addClass('user-text')
-            .on('keypress', function (e) {
-                if (e.which == 13) {
-                    that.validate(that._input.val());
-                }
-            })
-            .appendTo(controlWrapper);
+            this._input = $('<input>').addClass('user-text')
+                .on('keypress', function (e) {
+                    if (e.which == 13) {
+                        that.validate(that._input.val());
+                    }
+                })
+                .appendTo(controlWrapper);
 
-        this._button = $('<button>').text('submit')
-            .addClass('validate')
-            .on('click', function () { that.validate(that._input.val()); })
-            .appendTo(controlWrapper);
+            this._button = $('<button>').text('submit')
+                .addClass('validate')
+                .on('click', function () { that.validate(that._input.val()); })
+                .appendTo(controlWrapper);
+        }
 
         this._context = this._canvas.get(0).getContext("2d");
-
     };
 
     CAPTCHA.prototype = {
 
+        clear: function(){
+            this._context.clearRect(0,0, this._settings.width, this._settings.height);
+        },
+
         generate: function () {
+
+            this.clear();
 
             var context = this._context;
 
@@ -96,6 +109,8 @@
             for (var i = 0; i < numRandomCurves; i++) {
                 this._drawRandomCurve();
             }
+
+            this._settings.afterBuild(this._canvas.get(0), this._settings.text);
         },
 
         validate: function (userText) {

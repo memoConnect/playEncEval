@@ -12,7 +12,7 @@ define(['app','angular-resource'], function (app) {
             }
            ,sendFile: function(data){
                 return $http.post(
-                    cameo.restApi+"/sendFile"+(data.assetId != "" ? "/"+data.assetId : "")
+                    cameo.restApi+"/sendFile"+('assetId' in data && data.assetId != "" ? "/"+data.assetId : "")
                    ,{
                         chunk: data.chunk
                     }

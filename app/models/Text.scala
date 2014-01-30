@@ -14,7 +14,7 @@ import play.modules.reactivemongo.ReactiveMongoPlugin
  */
 case class Text(
                  id: String,
-                 text: String
+                 text: JsString
                  )
 
 
@@ -26,7 +26,7 @@ object Text {
   def inputReads: Reads[Text] = {
     (
       Reads.pure[String](Random.nextInt(10000).toString) and
-        (__ \ 'text).read[String]
+        (__ \ 'text).read[JsString]
       )(Text.apply _)
   }
 
