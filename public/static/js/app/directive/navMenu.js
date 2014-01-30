@@ -1,20 +1,17 @@
 define(['app'], function (app) {
-    app.register.controller("navMenuController", ['$scope', '$route', 'SiteName', '$window', '$location',
-        function ($scope, $route, SiteName, $window, $location) {
-            var tab_name = $route.current.navTab,
-                ga_path = SiteName + $location.path();
-
-            $scope.isTabActive = function (tabName) {
-                if (tabName === tab_name) {
-                    return "active";
-                }
-            };
-        }]);
-
-    app.register.directive('navMenu', function () {
+    'use strict';
+    app.directive('navMenu', function () {
         return {
             restrict: 'A',
-            controller: 'navMenuController',
+            controller: ['$scope', '$route', '$window', '$location',
+                function ($scope, $route, $window, $location) {
+                    console.log("navMenu Controller");
+                    $scope.isTabActive = function(tab) {
+                        if($route.current.$$route.originalPath.search(tab)>0)
+                            return "active";
+                        return null;
+                    };
+                }],
             templateUrl: 'static/js/app/directive/tpl/navMenu.html'
         };
     });

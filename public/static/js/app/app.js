@@ -58,22 +58,11 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
             });
         }]);
 
-    app.directive('navMenu', function () {
-        return {
-            restrict: 'A',
-            controller: ['$scope', '$route', '$window', '$location',
-            function ($scope, $route, $window, $location) {
-                $scope.isTabActive = function (tab) {
-                    if($route.current.$$route.originalPath.search(tab)>0)
-                        return "active";
-                };
-            }],
-            templateUrl: 'static/js/app/directive/tpl/navMenu.html'
-        };
+    // add directives
+    require(['_d/navMenu'], function(){
+        // Bootstrap Angular when DOM is ready
+        angularAMD.bootstrap(app);
     });
-
-    // Bootstrap Angular when DOM is ready
-    angularAMD.bootstrap(app);
 
     return app;
 });
