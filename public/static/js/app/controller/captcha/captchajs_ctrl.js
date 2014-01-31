@@ -13,7 +13,7 @@ function (app) {
         $scope.Util = Util;
 
         $scope.message = Crypto.getLoremIpsum(1);
-        $scope.pass = "Moinmoin";
+        $scope.pass = "";
 
         function getBlob(canvas){
             canvas.toBlob(function(blob){
@@ -94,11 +94,6 @@ function (app) {
         };
 
         $scope.decrypt = function(){
-            console.log(String($scope.pass))
-            console.log(String($scope.crypto))
-
-            console.log(sjcl.decrypt(String($scope.pass),String($scope.crypto)))
-
             try{
                 $scope.message = sjcl.decrypt(String($scope.pass),String($scope.crypto));
             } catch(e){
