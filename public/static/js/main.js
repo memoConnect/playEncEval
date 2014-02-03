@@ -28,6 +28,7 @@ require.config({
        ,'CapCaptchajsCtrl': 'controller/captcha/captchajs_ctrl'
        ,'CapCanvasCtrl': 'controller/captcha/canvas_ctrl'
        ,'CapMotionCtrl': 'controller/captcha/motion_ctrl'
+       ,'CapCaptchagenCtrl': 'controller/captcha/captchagen_ctrl'
     }
    ,packages: [
         {name: '_v', location: '../vendor'}
