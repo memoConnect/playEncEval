@@ -8,7 +8,7 @@ Protractor App Test:
 ----
 
 setup:
-´´´
+```
 $ npm install
 
 $ play run // play server
@@ -18,6 +18,6 @@ $ mongod // mongo deamon for play/scala backend
 $ webdriver-manager start // selenium server
 
 $ protractor test/conf/protractor.e2e // executes END-TO-END tests
-´´´
+```
 
 

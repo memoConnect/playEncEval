@@ -1,7 +1,8 @@
 var url = require("url");
 
-describe('angularAMD', function() {
+describe('captchagen Controller', function() {
     var ptor = protractor.getInstance();
+//        ptor.ignoreSynchronization = true
 
     function ptor_get(rel_path) {
         ptor.driver.get(url.resolve(ptor.baseUrl, rel_path));
@@ -14,13 +15,13 @@ describe('angularAMD', function() {
         }, ptor.allScriptsTimeout, "Taking too long to load " + rel_path);
     }
 
-    describe("captcha", function () {
+    describe("tab", function () {
         var route = '#/captcha/captchagen';
         beforeEach(function() {
             ptor_get(route);
         });
 
-        it('tab should be active', function() {
+        it('should be active', function() {
             expect(ptor.getCurrentUrl()).toContain(route);
             ptor.wait(function () {
                 return element(by.css('.dropdown-menu li.active a')).getAttribute('href').then(function (href) {
@@ -30,7 +31,7 @@ describe('angularAMD', function() {
         });
     });
 
-    describe("captchagen", function () {
+    describe("form-control", function () {
         it('dimensions should not empty', function() {
             expect(element(by.css('[ng-model="dim"]')).getAttribute('value')).toBe('400x200');
         });

@@ -2,6 +2,7 @@ var url = require("url");
 
 describe('angularAMD', function() {
     var ptor = protractor.getInstance();
+        ptor.ignoreSynchronization = true
 
     function ptor_get(rel_path) {
         ptor.driver.get(url.resolve(ptor.baseUrl, rel_path));
