@@ -1,7 +1,7 @@
 'use strict';
 
 define(['app'], function (app) {
-    app.register.factory('Util',
+    app.factory('Util',
     function(){
         return {
             prettify: function(json){
@@ -58,6 +58,17 @@ define(['app'], function (app) {
                 link.rel = "stylesheet";
                 link.href = url;
                 document.getElementsByTagName("head")[0].appendChild(link);
+            }
+           ,ucFirst: function(string){
+                string += '';
+                var f = string.charAt(0).toUpperCase();
+                return f + string.substr(1);
+            }
+           ,notSorted: function(obj){
+                if (!obj) {
+                    return [];
+                }
+                return Object.keys(obj);
             }
         };
     });

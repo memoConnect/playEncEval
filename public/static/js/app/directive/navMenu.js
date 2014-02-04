@@ -1,12 +1,24 @@
-define(['app'], function (app) {
+define(['app','_s/utilService'], function (app) {
     'use strict';
     app.directive('navMenu', function () {
         return {
             restrict: 'A',
-            controller: ['$scope', '$route', '$window', '$location',
-                function ($scope, $route, $window, $location) {
-                    $scope.inCollapse = false;
+            controller: ['$scope', '$route', '$window', '$location', 'Util',
+                function ($scope, $route, $window, $location, Util) {
 
+                    $scope.Util = Util;
+                    $scope.navigation = cameo.navigation;
+
+
+                    $scope.isDefault = function(route){
+                        return typeof route == "string" && route == "default";
+                    };
+
+                    $scope.hasSubRoutes = function(subRoutes){
+                        return typeof subRoutes == 'object' && subRoutes.length > 0;
+                    };
+
+                    $scope.inCollapse = false;
                     $scope.isTabActive = function(tab) {
                         if($route.current.$$route.naviIndex == tab ||
                            $route.current.$$route.originalPath.search(tab) > 0){
@@ -16,7 +28,6 @@ define(['app'], function (app) {
                     };
 
                     $scope.hideNav = function(){
-                        console.log("hide nav")
                         $scope.inCollapse = false;
                     };
                     $scope.toggleNavi = function(){

@@ -2,6 +2,12 @@
 var cameo = {
     restApi: "http://"+location.host+"/api"
    ,token: null
+   ,navigation: {
+        'home':     'default'
+       ,'crypto':   ['javascrypt','movable','cryptojs','sjcl','openpgpjs']
+       ,'tools':    ['localstorage','fileapi']
+       ,'captcha':  ['captchajs','canvas','motion','captchagen']
+    }
 };
 define(['angularAMD', 'angular-route'], function (angularAMD) {
     var app = angular.module('cameoApp', ['ngRoute']);
@@ -11,8 +17,6 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
         //$locationProvider.html5Mode(true);
 
         // string defines shortner
-        var d = {limiter: '/'};
-
         function ucfirst (str) {
             str += '';
             var f = str.charAt(0).toUpperCase();
@@ -26,46 +30,41 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
          *
          * nameconventions:
          * templateUrl: static/tpl/{type}/{name}.html
-         * controller: {Type}{name}Ctrl
+         * controller: {Type}{Name}Ctrl
          * controllerUrl: controller/{type}/{name}_ctrl
          */
         function addRouteToProviderViaAMD(name, type){
             // create controller object for AMD route
             var ctrl = {
-                templateUrl:    'static/tpl' + d.limiter + (typeof type != 'undefined' ? type + d.limiter : '') + name + '.html'
+                templateUrl:    'static/tpl/' + (typeof type != 'undefined' ? type + '/' : '') + name + '.html'
                ,controller:     (typeof type != 'undefined' ? ucfirst(type) : '') + ucfirst(name) + 'Ctrl'
-               ,controllerUrl:  'controller' + d.limiter + (typeof type != 'undefined' ? type + d.limiter: '') + name + '_ctrl'
-               ,naviIndex: {name:name,type:type}
+               ,controllerUrl:  'controller/' + (typeof type != 'undefined' ? type + '/' : '') + name + '_ctrl'
+               ,naviIndex: {
+                    name: name
+                   ,type: type
+                }
             };
-
-            $routeProvider.when(d.limiter + (typeof type != 'undefined' ? type + d.limiter: '') + name, angularAMD.route(ctrl));
+            $routeProvider.when('/' + (typeof type != 'undefined' ? type + '/': '') + name, angularAMD.route(ctrl));
         }
 
-        // main route with otherwise
-        addRouteToProviderViaAMD('home');
-        $routeProvider.otherwise({
-            redirectTo: '/home'
+        // go through cameo.navigation json
+        angular.forEach(cameo.navigation, function(subRoutes, baseRoute){
+            // main route with otherwise
+            if(typeof subRoutes == "string" && subRoutes == "default"){
+                addRouteToProviderViaAMD(baseRoute);
+                $routeProvider.otherwise({
+                    redirectTo: '/'+baseRoute
+                });
+            // base with subroutes eq.: 'captcha/canvas'
+            } else if(typeof subRoutes == "object" && subRoutes.length > 0){
+                angular.forEach(subRoutes,function(subRoute){
+                    addRouteToProviderViaAMD(subRoute,baseRoute);
+                });
+            }
         });
-        // crypto routes
-        d.cr = 'crypto';
-        addRouteToProviderViaAMD('javascrypt', d.cr);
-        addRouteToProviderViaAMD('movable', d.cr);
-        addRouteToProviderViaAMD('cryptojs', d.cr);
-        addRouteToProviderViaAMD('sjcl', d.cr);
-        addRouteToProviderViaAMD('openpgpjs', d.cr);
-        // tool routes
-        d.t = 'tools';
-        addRouteToProviderViaAMD('localstorage', d.t);
-        addRouteToProviderViaAMD('fileapi', d.t);
-        // captcha routes
-        d.ca = 'captcha';
-        addRouteToProviderViaAMD('captchajs', d.ca);
-        addRouteToProviderViaAMD('canvas', d.ca);
-        addRouteToProviderViaAMD('motion', d.ca);
-        addRouteToProviderViaAMD('captchagen', d.ca);
     }]);
 
-    // add directives
+    // add global directives
     require(['_d/navMenu'], function(){
         // Bootstrap Angular when DOM is ready
         angularAMD.bootstrap(app);
