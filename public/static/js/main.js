@@ -13,22 +13,6 @@ require.config({
 
        ,'angularAMD': '../vendor/requirejs/angularAMD'
        ,'ngload': '../vendor/requirejs/ngload'
-
-       ,'HomeCtrl': 'controller/home_ctrl'
-
-       ,'CryptJavascryptCtrl': 'controller/crypto/javascrypt_ctrl'
-       ,'CryptMovableCtrl': 'controller/crypto/movable_ctrl'
-       ,'CryptCryptoJsCtrl': 'controller/crypto/cryptojs_ctrl'
-       ,'CryptOpenPgpJsCtrl': 'controller/crypto/openpgpjs_ctrl'
-       ,'CryptSJCLCtrl': 'controller/crypto/sjcl_ctrl'
-
-       ,'ToolFileApiCtrl': 'controller/tools/fileapi_ctrl'
-       ,'ToolLocalStorageCtrl': 'controller/tools/localstorage_ctrl'
-
-       ,'CapCaptchajsCtrl': 'controller/captcha/captchajs_ctrl'
-       ,'CapCanvasCtrl': 'controller/captcha/canvas_ctrl'
-       ,'CapMotionCtrl': 'controller/captcha/motion_ctrl'
-       ,'CapCaptchagenCtrl': 'controller/captcha/captchagen_ctrl'
     }
    ,packages: [
         {name: '_v', location: '../vendor'}

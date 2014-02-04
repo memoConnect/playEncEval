@@ -1,6 +1,6 @@
 'use strict';
 define(['app','_v/movable/aes','_s/cryptoService', '_s/benchmarkService'], function (app) {
-    app.register.controller('CryptMovableCtrl', ['$scope','Crypto', 'Benchmark', function ($scope, Crypto, Benchmark) {
+    app.register.controller('CryptoMovableCtrl', ['$scope','Crypto', 'Benchmark', function ($scope, Crypto, Benchmark) {
         $scope.time = {encrypt:0,decrypt:0};
         $scope.aesSize = 256;
         $scope.formData = {

@@ -8,7 +8,7 @@ define(['app'
    ,'directive/ngUpload'
 ], function (app) {
     // root controller for the whole template
-    app.register.controller('ToolFileApiCtrl', ['$scope', function($scope){}]);
+    app.register.controller('ToolsFileapiCtrl', ['$scope', function($scope){}]);
     // crypto controller manage the key
     app.register.controller('CryptoCtrl',['$rootScope', '$scope', 'Crypto',
     function($rootScope, $scope, Crypto){

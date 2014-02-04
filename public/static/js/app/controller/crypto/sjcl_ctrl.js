@@ -8,7 +8,7 @@
 
 'use strict';
 define(['app','_v/sjcl/main','_s/cryptoService', '_s/benchmarkService','_s/utilService'], function (app) {
-    app.register.controller('CryptSJCLCtrl', ['$scope', 'Crypto', 'Benchmark', 'Util', function ($scope, Crypto, Benchmark, Util) {
+    app.register.controller('CryptoSjclCtrl', ['$scope', 'Crypto', 'Benchmark', 'Util', function ($scope, Crypto, Benchmark, Util) {
         $scope.Util = Util;
         $scope.time = {encrypt:0,decrypt:0};
         $scope.formData = {

@@ -1,7 +1,7 @@
 'use strict';
 define(['app', 'jquery', '_s/utilService', '_v/captcha/motion/motion', '_v/canvasToBlob/canvasToBlob'],
 function (app, $) {
-    app.register.controller('CapMotionCtrl', ['$scope', 'Util',
+    app.register.controller('CaptchaMotionCtrl', ['$scope', 'Util',
     function ($scope, Util) {
         // bootstrap
         Util.loadCss('static/js/vendor/captcha/motion/motion.css');

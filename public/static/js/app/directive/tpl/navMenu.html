@@ -1,7 +1,7 @@
 <div class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <button type="button" class="navbar-toggle" ng-click="toggleNavi()">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -9,12 +9,12 @@
             </button>
             <a class="navbar-brand" href="#">EncEval</a>
         </div>
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" ng-class="{'collapse':!inCollapse,'in':inCollapse}">
             <ul class="nav navbar-nav">
-                <li ng-class="isTabActive('home')"><a href="#/home">Home</a></li>
+                <li ng-class="isTabActive('home')" ng-click="hideNav()"><a href="#/home">Home</a></li>
                 <li class="dropdown" ng-class="isTabActive('crypto')">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Crypto <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" ng-click="hideNav()">
                         <li ng-class="isTabActive('sjcl')"><a href="#/crypto/sjcl">Stanford</a></li>
                         <li ng-class="isTabActive('openpgp')"><a href="#/crypto/openpgpjs">OpenPgpJS</a></li>
                         <li class="divider"></li>
@@ -26,14 +26,14 @@
                 </li>
                 <li class="dropdown" ng-class="isTabActive('tools')">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" ng-click="hideNav()">
                         <li ng-class="isTabActive('localstorage')"><a href="#/tools/localstorage">LocalStorage</a></li>
                         <li ng-class="isTabActive('fileapi')"><a href="#/tools/fileapi">FileApi</a></li>
                     </ul>
                 </li>
                 <li class="dropdown" ng-class="isTabActive('captcha')">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Captcha <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" ng-click="hideNav()">
                         <li ng-class="isTabActive('captchagen')"><a href="#/captcha/captchagen">Captchagen</a></li>
                         <li ng-class="isTabActive('captchajs')"><a href="#/captcha/captchajs">Captcha.js</a></li>
                         <li ng-class="isTabActive('canvas')"><a href="#/captcha/canvas">HTML5 Canvas</a></li>

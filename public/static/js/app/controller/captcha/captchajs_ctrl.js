@@ -3,7 +3,7 @@ define(['app', 'jquery',
     '_s/utilService', '_s/cryptoService', '_s/apiService',
     '_v/captcha/captchajs/captchajs', '_v/canvasToBlob/canvasToBlob', '_v/sjcl/main'],
 function (app) {
-    app.register.controller('CapCaptchajsCtrl', ['$scope',
+    app.register.controller('CaptchaCaptchajsCtrl', ['$scope',
     function ($scope) {
 
     }]);

@@ -1,6 +1,6 @@
 'use strict';
 define(['app','_v/cryptojs/aes','_s/cryptoService', '_s/benchmarkService'], function (app) {
-    app.register.controller('CryptCryptoJsCtrl', ['$scope', 'Crypto', 'Benchmark', function ($scope, Crypto, Benchmark) {
+    app.register.controller('CryptoCryptojsCtrl', ['$scope', 'Crypto', 'Benchmark', function ($scope, Crypto, Benchmark) {
 
         $scope.time = {encrypt:0,decrypt:0};
 

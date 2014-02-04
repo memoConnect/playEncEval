@@ -3,7 +3,7 @@ define(['app'
    , '_s/utilService', '_s/cryptoService'
    ,'_v/captcha/captchagen/captchagen'],
     function (app) {
-        app.register.controller('CapCaptchagenCtrl', ['$scope', 'Util', 'Crypto',
+        app.register.controller('CaptchaCaptchagenCtrl', ['$scope', 'Util', 'Crypto',
         function ($scope, Util, Crypto) {
             var captcha;
 

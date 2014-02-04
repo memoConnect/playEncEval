@@ -1,6 +1,6 @@
 'use strict';
 define(['app','_v/openpgpjs/openpgpjs.min','_s/localStorageService','_s/cryptoService'], function (app, openpgp) {
-    app.register.controller('CryptOpenPgpJsCtrl', ['$scope', '$timeout', 'LocalStorage', 'Crypto', function ($scope, $timeout, LocalStorage, Crypto) {
+    app.register.controller('CryptoOpenpgpjsCtrl', ['$scope', '$timeout', 'LocalStorage', 'Crypto', function ($scope, $timeout, LocalStorage, Crypto) {
         $scope.message = "";
         $scope.genBtn = "generate";
         $scope.stateBusy = false;

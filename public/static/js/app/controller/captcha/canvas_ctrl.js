@@ -1,7 +1,7 @@
 'use strict';
 define(['app', '_s/utilService', '_s/cryptoService', '_v/captcha/html5canvas/html5canvas', '_v/canvasToBlob/canvasToBlob'],
 function (app) {
-    app.register.controller('CapCanvasCtrl', ['$scope', 'Util', 'Crypto',
+    app.register.controller('CaptchaCanvasCtrl', ['$scope', 'Util', 'Crypto',
     function ($scope, Util, Crypto) {
         // bootstrap
         Util.loadCss('static/js/vendor/captcha/html5canvas/html5canvas.css');
