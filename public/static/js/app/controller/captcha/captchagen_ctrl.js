@@ -30,5 +30,7 @@ define(['app'
                 captcha.refresh();
                 $scope.pass = captcha.text();
             }
+
+            $scope.create();
         }]);
     });

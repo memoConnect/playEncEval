@@ -16,7 +16,7 @@
 
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-if="hasSubRoutes(subRoutes)">{{Util.ucFirst(baseRoute)}} <b class="caret"></b></a>
                     <ul class="dropdown-menu" ng-click="hideNav()" ng-if="hasSubRoutes(subRoutes)">
-                        <li ng-class="isTabActive(subRoute)" ng-repeat="subRoute in subRoutes" id="{{baseRoute}}-{{subRoute}}">
+                        <li ng-class="isTabActive(subRoute)" ng-repeat="subRoute in subRoutes">
                             <a href="#/{{baseRoute}}/{{subRoute}}">{{Util.ucFirst(subRoute)}}</a>
                         </li>
                     </ul>

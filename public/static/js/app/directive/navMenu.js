@@ -1,14 +1,25 @@
-define(['app','_s/utilService'], function (app) {
+define(['app'], function (app) {
     'use strict';
     app.directive('navMenu', function () {
         return {
             restrict: 'A',
-            controller: ['$scope', '$route', '$window', '$location', 'Util',
-                function ($scope, $route, $window, $location, Util) {
+            controller: ['$scope', '$route', '$window', '$location',
+                function ($scope, $route, $window, $location) {
 
-                    $scope.Util = Util;
-                    $scope.navigation = cameo.navigation;
-
+                    $scope.Util = {
+                        ucFirst: function(string){
+                            string += '';
+                            var f = string.charAt(0).toUpperCase();
+                            return f + string.substr(1);
+                        }
+                       ,notSorted: function(obj){
+                            if (!obj) {
+                                return [];
+                            }
+                            return Object.keys(obj);
+                        }
+                    };
+                    $scope.navigation = app.cameo.navigation;
 
                     $scope.isDefault = function(route){
                         return typeof route == "string" && route == "default";
@@ -40,4 +51,5 @@ define(['app','_s/utilService'], function (app) {
             templateUrl: 'static/js/app/directive/tpl/navMenu.html'
         };
     });
+    return app;
 });

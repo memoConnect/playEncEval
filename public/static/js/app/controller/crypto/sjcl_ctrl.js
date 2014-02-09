@@ -5,10 +5,10 @@
  * Time: 2:39 PM
  * To change this template use File | Settings | File Templates.
  */
-
-'use strict';
-define(['app','_v/sjcl/main','_s/cryptoService', '_s/benchmarkService','_s/utilService'], function (app) {
+define(['app', '_v/sjcl/main.min', '_s/cryptoService', '_s/benchmarkService', '_s/utilService'], function (app) {
+    'use strict';
     app.register.controller('CryptoSjclCtrl', ['$scope', 'Crypto', 'Benchmark', 'Util', function ($scope, Crypto, Benchmark, Util) {
+
         $scope.Util = Util;
         $scope.time = {encrypt:0,decrypt:0};
         $scope.formData = {
@@ -17,7 +17,7 @@ define(['app','_v/sjcl/main','_s/cryptoService', '_s/benchmarkService','_s/utilS
         };
         $scope.placeholder = {
             key: "PrivateKey"
-            ,plainText: "uncrypted message"
+           ,plainText: "uncrypted message"
         };
 
         $scope.genKey = function(){

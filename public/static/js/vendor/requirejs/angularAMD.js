@@ -278,7 +278,6 @@ define(function () {
                     value: provide.value,
                     animation: animateProvider.register
                 };
-
             }]
         );
 

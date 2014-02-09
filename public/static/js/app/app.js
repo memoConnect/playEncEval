@@ -1,16 +1,18 @@
-'use strict';
-var cameo = {
-    restApi: "http://"+location.host+"/api"
-   ,token: null
-   ,navigation: {
-        'home':     'default'
-       ,'crypto':   ['javascrypt','movable','cryptojs','sjcl','openpgpjs']
-       ,'tools':    ['localstorage','fileapi']
-       ,'captcha':  ['captchajs','canvas','motion','captchagen']
-    }
-};
 define(['angularAMD', 'angular-route'], function (angularAMD) {
+    'use strict';
     var app = angular.module('cameoApp', ['ngRoute']);
+
+    app.cameo = {
+        restApi: "http://"+location.host+"/api"
+       ,token: null
+       ,navigation: {
+            'home':     'default'
+            ,'crypto':   ['javascrypt','movable','cryptojs','sjcl','openpgpjs']
+            ,'tools':    ['localstorage','fileapi']
+            ,'captcha':  ['captchajs','canvas','motion','captchagen']
+        }
+    };
+
     app.config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider){
         // route without # Hashbang
@@ -48,7 +50,7 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
         }
 
         // go through cameo.navigation json
-        angular.forEach(cameo.navigation, function(subRoutes, baseRoute){
+        angular.forEach(app.cameo.navigation, function(subRoutes, baseRoute){
             // main route with otherwise
             if(typeof subRoutes == "string" && subRoutes == "default"){
                 addRouteToProviderViaAMD(baseRoute);
@@ -65,10 +67,63 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
     }]);
 
     // add global directives
-    require(['_d/navMenu'], function(){
-        // Bootstrap Angular when DOM is ready
-        angularAMD.bootstrap(app);
+//    require(['_d/navMenu'], function(){
+//        // Bootstrap Angular when directive is ready
+//
+//    });
+    app.directive('navMenu', function () {
+        return {
+            restrict: 'A',
+            controller: ['$scope', '$route', '$window', '$location',
+                function ($scope, $route, $window, $location) {
+
+                    $scope.Util = {
+                        ucFirst: function(string){
+                            string += '';
+                            var f = string.charAt(0).toUpperCase();
+                            return f + string.substr(1);
+                        }
+                        ,notSorted: function(obj){
+                            if (!obj) {
+                                return [];
+                            }
+                            return Object.keys(obj);
+                        }
+                    };
+                    $scope.navigation = app.cameo.navigation;
+
+                    $scope.isDefault = function(route){
+                        return typeof route == "string" && route == "default";
+                    };
+
+                    $scope.hasSubRoutes = function(subRoutes){
+                        return typeof subRoutes == 'object' && subRoutes.length > 0;
+                    };
+
+                    $scope.inCollapse = false;
+                    $scope.isTabActive = function(tab) {
+                        if($route.current.$$route.naviIndex == tab ||
+                            $route.current.$$route.originalPath.search(tab) > 0){
+                            return "active";
+                        }
+                        return null;
+                    };
+
+                    $scope.hideNav = function(){
+                        $scope.inCollapse = false;
+                    };
+                    $scope.toggleNavi = function(){
+                        if($scope.inCollapse === false)
+                            $scope.inCollapse = true;
+                        else
+                            $scope.inCollapse = false;
+                    };
+                }],
+            templateUrl: 'static/js/app/directive/tpl/navMenu.html'
+        };
     });
+
+    angularAMD.bootstrap(app);
 
     return app;
 });

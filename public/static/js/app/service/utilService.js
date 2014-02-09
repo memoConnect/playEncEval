@@ -1,7 +1,7 @@
 'use strict';
 
 define(['app'], function (app) {
-    app.factory('Util',
+    app.register.factory('Util',
     function(){
         return {
             prettify: function(json){

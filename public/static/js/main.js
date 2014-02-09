@@ -3,10 +3,10 @@ require.config({
     // alias libraries paths
    ,urlArgs: "bust=" + (new Date()).getTime()
    ,paths: {
-        'angular': '../vendor/angular/angular.min'
-       ,'angular-route': '../vendor/angular/angular-route.min'
-       ,'angular-resource': '../vendor/angular/angular-resource.min'
-       ,'angular-cookies': '../vendor/angular/angular-cookies.min'
+        'angular': '../vendor/angular/angular'
+       ,'angular-route': '../vendor/angular/angular-route'
+       ,'angular-resource': '../vendor/angular/angular-resource'
+       ,'angular-cookies': '../vendor/angular/angular-cookies'
 
        ,'jquery': '../vendor/jquery/jquery.min'
        ,'bootstrap': '../vendor/bootstrap/bootstrap.min'

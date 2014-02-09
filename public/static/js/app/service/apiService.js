@@ -5,14 +5,14 @@ define(['app','angular-resource'], function (app) {
     function($http){
         return {
             sendText: function(text){
-                return $http.post(cameo.restApi+"/sendText",{text:text})
+                return $http.post(app.cameo.restApi+"/sendText",{text:text})
             }
            ,getText: function(id){
-                return $http.get(cameo.restApi+"/getText/"+id)
+                return $http.get(app.cameo.restApi+"/getText/"+id)
             }
            ,sendFile: function(data){
                 return $http.post(
-                    cameo.restApi+"/sendFile"+('assetId' in data && data.assetId != "" ? "/"+data.assetId : "")
+                    app.cameo.restApi+"/sendFile"+('assetId' in data && data.assetId != "" ? "/"+data.assetId : "")
                    ,{
                         chunk: data.chunk
                     }
@@ -28,7 +28,7 @@ define(['app','angular-resource'], function (app) {
                 )
             }
            ,getFile: function(assetId, chunkId){
-                return $http.get(cameo.restApi+"/getFile/"+assetId+(angular.isDefined(chunkId)?"/"+chunkId:""))
+                return $http.get(app.cameo.restApi+"/getFile/"+assetId+(angular.isDefined(chunkId)?"/"+chunkId:""))
             }
         };
     });
