@@ -135,7 +135,6 @@
     Captchagen.prototype = {
         use: function(fn) {
             this._middleware.push(fn);
-            return this;
         }
        ,reset: function() {
             this.canvas = document.getElementById('canvas');
@@ -143,15 +142,13 @@
             this.canvas.setAttribute('height', this.options.height);
 
             this.canvas.getContext('2d').clearRect(0,0, this.options.width, this.options.height);
-
-            return this;
         }
        ,generate: function() {
             this.reset();
+            var self = this;
             this._middleware.forEach(function(fn){
-                this.canvas = fn(this.canvas, this.options);
-            }.bind(this));
-            return this;
+                fn(self.canvas, self.options);
+            });
         }
        ,refresh: function(string){
             if(typeof string == "string"){

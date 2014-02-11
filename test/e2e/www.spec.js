@@ -87,25 +87,25 @@ describe('angularAMD', function() {
         });
 
         describe("form-control", function () {
-            var tmpPass, passInp;
+            var tmpPass, passInp
+                ,defDim = '400x200'
+                ,newDim = '300x100'
+                ,inpDim = $('[ng-model="dim"]')
+                ,canvas = $('canvas');
 
-            it('test a non model input',function(){
-                $('#test').getAttribute('value').then(function(value){
-                    console.log('test value: '+value)
-                });
-                expect($('#test').getAttribute('value')).toBe('12345-400x200');
-            });
-
-            it('dimensions should be not empty', function() {
-                var defDim = '400x200'
-                   ,newDim = '300x100'
-                   ,inpDim = $('[ng-model="dim"]');
-
-                expect(inpDim.isDisplayed()).toBe(true);
+            it('dimensions should be '+defDim, function() {
                 inpDim.getAttribute('value').then(function(value){
                     expect(value).toBe(defDim);
                 });
+            });
 
+            it('canvas element should has size of dim '+defDim, function(){
+                canvas.getSize().then(function(canvasDim){
+                    expect(canvasDim.width+"x"+canvasDim.height).toBe(defDim);
+                });
+            });
+
+            it('dimension gets new input and should be '+newDim, function(){
                 inpDim.sendKeys(protractor.Key.chord(protractor.Key.CONTROL, "a"));
                 inpDim.sendKeys(protractor.Key.BACK_SPACE);
                 inpDim.clear();
@@ -114,18 +114,20 @@ describe('angularAMD', function() {
                 expect(inpDim.getAttribute('value')).toBe(newDim);
             });
 
+            it('canvas element should has new size '+newDim, function(){
+                canvas.getSize().then(function(canvasDim){
+                    expect(canvasDim.width+"x"+canvasDim.height).toBe(newDim);
+                });
+            });
+
             it('pass should be not empty', function() {
                 passInp = $('[ng-model="pass"]');
-                expect(passInp.isDisplayed()).toBe(true);
-
                 tmpPass = passInp.getAttribute('value');
                 expect(tmpPass).not.toBe('');
             });
 
             it('button generate new should generate another pass', function() {
                 $('[ng-click="genKey()"]').click();
-                expect(passInp.isDisplayed()).toBe(true);
-
                 expect(passInp.getAttribute('value')).not.toBe(tmpPass);
             });
         });

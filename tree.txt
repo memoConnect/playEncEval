@@ -8,30 +8,39 @@ $ tree "playEncEval"
 |   |       |   |   |-- tools
 |   |       |   |   |   |-- fileapi_ctrl.js
 |   |       |   |   |   `-- localstaorage_ctrl.js
+|   |       |   |   |
 |   |       |   |   `-- home_ctrl.js
+|   |       |   |
 |   |       |   |-- directive
 |   |       |   |-- service
 |   |       |   `-- app.js
+|   |       |
 |   |       |-- vendor
 |   |       |   |-- angular
 |   |       |   |   |-- angular.min.js
 |   |       |   |   |-- angular-cookies.min.js
 |   |       |   |   |-- angular-resource.min.js
 |   |       |   |   `-- angular-route.min.js
+|   |       |   |
 |   |       |   |-- bootstrap
 |   |       |   |   `-- bootstrap.min.js
+|   |       |   |
 |   |       |   `-- requirejs
 |   |       |       |-- require.min.js
 |   |       |       |-- angularAMD.js
 |   |       |       `-- ngload.js
+|   |       |
 |   |       `-- main.js
 |   `-- index.html
 `-- test
     |-- conf
     |   |-- ptor.e2e.js
     |   `-- karma.conf.js
+    |
     |-- unit
-    |   |-- app.main.js
-    |   `-- app.spec.js
+    |   |-- test.main.js // requirejs file
+    |   |-- app.spec.js
+    |   |-- home_ctrl.spec.js
+    |
     `-- e2e
         `-- www.spec.js

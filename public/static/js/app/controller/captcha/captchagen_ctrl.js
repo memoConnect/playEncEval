@@ -14,11 +14,12 @@ define(['app'
                 var dim = $scope.dim.split("x");
                 captcha = new Captchagen({
                     width: dim[0]
-                   ,height: dim[1]
-                   ,text: $scope.pass
-                   ,font: $scope.font
+                    ,height: dim[1]
+                    ,text: $scope.pass
+                    ,font: $scope.font
                 });
                 captcha.generate();
+
                 $scope.pass = captcha.text();
             };
 
@@ -29,7 +30,7 @@ define(['app'
             $scope.genKey = function(){
                 captcha.refresh();
                 $scope.pass = captcha.text();
-            }
+            };
 
             $scope.create();
         }]);

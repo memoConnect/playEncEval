@@ -33,6 +33,8 @@ exports.config = {
     // Override the timeout for webdriver to 20 seconds.
     allScriptsTimeout: 20000,
 
+    webdriverLoglevel: 'DEBUG',
+
     // Options to be passed to Jasmine-node.
     jasmineNodeOpts: {
         showColors: true
