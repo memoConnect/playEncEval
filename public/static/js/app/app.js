@@ -7,7 +7,7 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
        ,token: null
        ,navigation: {
             'home':     'default'
-            ,'crypto':   ['javascrypt','movable','cryptojs','sjcl','openpgpjs']
+            ,'crypto':   ['javascrypt','movable','cryptojs','sjcl','openpgpjs', 'cryptico']
             ,'tools':    ['localstorage','fileapi']
             ,'captcha':  ['captchajs','canvas','motion','captchagen']
         }
