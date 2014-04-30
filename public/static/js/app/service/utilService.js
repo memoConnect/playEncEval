@@ -47,10 +47,13 @@ define(['app'], function (app) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
            ,bytesToString: function(bytes) {
-                var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-                if (bytes == 0) return 'n/a';
-                var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-                return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+//                var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+//                if (bytes == 0) return 'n/a';
+//                var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+//                return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+                var sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+                var i = Math.floor( Math.log(bytes) / Math.log(1024) );
+                return ( bytes / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + sizes[i];
             }
            ,loadCss: function(url) {
                 var link = document.createElement("link");
@@ -69,6 +72,17 @@ define(['app'], function (app) {
                     return [];
                 }
                 return Object.keys(obj);
+            }
+           ,addDots: function (nStr){
+                nStr += '';
+                var x = nStr.split('.');
+                var x1 = x[0];
+                var x2 = x.length > 1 ? '.' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1)) {
+                    x1 = x1.replace(rgx, '$1' + '.' + '$2'); // changed comma to dot here
+                }
+                return x1 + x2;
             }
         };
     });

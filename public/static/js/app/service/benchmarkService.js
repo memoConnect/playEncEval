@@ -7,13 +7,22 @@
  */
 
 
-define(['app', '_s/cryptoService'], function (app) {
+define(['app', '_s/cryptoService', '_s/utilService'], function (app) {
     app.register.factory('Benchmark',
-        function (Crypto) {
+        function (Crypto, Util) {
 
             var my_scope
+            var startTime
 
             return {
+
+                start: function(){
+                    startTime = new Date();
+                },
+                end: function(){
+                    //return secondsToString(((new Date).getTime() - startTime.getTime())/1000);
+                    return Util.millisecondsToStr(((new Date).getTime() - startTime.getTime()));
+                },
 
                 run: function ($scope) {
                     my_scope = $scope

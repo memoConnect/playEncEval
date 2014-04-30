@@ -10,6 +10,7 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
             ,'crypto':   ['javascrypt','movable','cryptojs','sjcl','openpgpjs', 'cryptico']
             ,'tools':    ['localstorage','fileapi']
             ,'captcha':  ['captchajs','canvas','motion','captchagen']
+            ,'image':    ['resize','upload']
         }
     };
 

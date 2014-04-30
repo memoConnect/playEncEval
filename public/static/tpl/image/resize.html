@@ -1,0 +1,89 @@
+<style type="text/css">
+    .states{margin:10px 0}
+</style>
+<div ng-controller="ImageResizeCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <h3><span class="label label-default">resize</span></h3>
+                <div class="form-group">
+                    proportional:
+                    <input type="checkbox" ng-model="resize.proportinal" />
+                </div>
+                <div class="form-group form-inline" role="form">
+                    max:
+                    <div class="form-group">
+                        <input type="number" ng-model="resize.width" placeholder="width" class="form-control" ng-change="checkProportions('width')" />
+                    </div>
+                    x
+                    <div class="form-group">
+                        <input type="number" ng-model="resize.height" placeholder="height" class="form-control" ng-change="checkProportions('height')" />
+                    </div>
+                    px
+                </div>
+                <div class="form-group form-inline" role="form">
+                    mimetype:
+                    <div class="form-group">
+                        <input type="text" ng-model="resize.mime" placeholder="mime" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group form-inline" role="form">
+                    quality:
+                    <div class="form-group">
+                        <input type="text" ng-model="resize.quality" placeholder="quality" class="form-control" />
+                    </div>
+                    0.0 - 1.0
+                </div>
+            </div>
+            <div class="form-inline" role="form">
+                <h3><span class="label label-default">Lanczos resampling</span></h3>
+                <div class="form-group">
+                    <input type="checkbox" ng-model="resize.resampling" />
+                </div>
+                <div class="form-group">
+                    <input type="text" ng-model="resize.lanczos" placeholder="lanczos" class="form-control" />
+                </div>
+                <a href="http://stackoverflow.com/questions/2303690/resizing-an-image-in-an-html5-canvas">Stackoverflow</a>
+            </div>
+            <div class="form-inline" role="form">
+                <h3><span class="label label-default">fileSelect</span></h3>
+                <input type="file" ng-upload="file" />
+                <pre ng-if="file">{{Util.prettify(file)}}</pre>
+                <button class="btn btn-primary" ng-click="resizeFile()" ng-if="file">{{resize.state}}</button>
+                setDimTo:
+                <button class="btn btn-primary" ng-click="setDimTo(90)">90 thumb</button>
+                <button class="btn btn-primary" ng-click="setDimTo(1024)">1024 Max</button>
+            </div>
+        </div>
+
+        <!--div class="col-md-6">
+            <h3><span class="label label-primary">cmAvatar</span></h3>
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="(key,imageKey) in Object.keys(images)">
+                    {{imageKey}}
+                    <button class="btn btn-primary" ng-click="resize(images[imageKey])">resize</button>
+                </li>
+            </ul>
+        </div-->
+    </div>
+
+    <div class="row states">
+        <h4>
+            <span class="label label-default">resizeSet: {{resize.width}} x {{resize.height}}px | {{resize.mime}} | qual: {{resize.quality}}</span>
+
+            <span class="label label-default" ng-if="Util.objLen(original)>0"><br />originalDim: {{original.width}} x {{original.height}}px = {{Util.bytesToString(original.size)}}</span>
+
+            <span class="label label-default" ng-if="Util.objLen(thumb)>0"><br />thumbDim: {{thumb.width}} x {{thumb.height}}px = {{Util.bytesToString(thumb.size)}}</span>
+
+            <span class="label label-primary" ng-if="resize.timer"><br />thumbnailTime: {{resize.timer}}</span>
+        </h4>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div style="width:{{resize.width}}px;height:{{resize.height}}px;background:#ccc;">
+                <img src="{{thumb.src}}" cm-thumb="thumb" style="margin:5px" />
+            </div>
+        </div>
+    </div>
+</div>
