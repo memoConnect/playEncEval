@@ -3,9 +3,9 @@
 </style>
 <div ng-controller="ImageResizeCtrl">
     <div class="row">
-        <div class="col-md-12">
-            <div>
-                <h3><span class="label label-default">resize</span></h3>
+        <div class="col-md-12" ng-init="rOpts=false;lrOpts=false">
+            <h3><span class="label label-default" ng-click="rOpts=(rOpts == true)?false:true">resizeOptions</span></h3>
+            <div ng-show="rOpts">
                 <div class="form-group">
                     proportional:
                     <input type="checkbox" ng-model="resize.proportinal" />
@@ -36,23 +36,28 @@
                 </div>
             </div>
             <div class="form-inline" role="form">
-                <h3><span class="label label-default">Lanczos resampling</span></h3>
-                <div class="form-group">
-                    <input type="checkbox" ng-model="resize.resampling" />
+                <h3><span class="label label-default" ng-click="lrOpts=(lrOpts == true)?false:true">Lanczos resampling</span></h3>
+                <div ng-show="lrOpts">
+                    <div class="form-group">
+                        <input type="checkbox" ng-model="resize.resampling" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" ng-model="resize.lanczos" placeholder="lanczos" class="form-control" />
+                    </div>
+                    <a href="http://stackoverflow.com/questions/2303690/resizing-an-image-in-an-html5-canvas">Stackoverflow</a>
                 </div>
-                <div class="form-group">
-                    <input type="text" ng-model="resize.lanczos" placeholder="lanczos" class="form-control" />
-                </div>
-                <a href="http://stackoverflow.com/questions/2303690/resizing-an-image-in-an-html5-canvas">Stackoverflow</a>
             </div>
             <div class="form-inline" role="form">
-                <h3><span class="label label-default">fileSelect</span></h3>
+                <h3><span class="label label-primary">fileUpload</span></h3>
                 <input type="file" ng-upload="file" />
                 <pre ng-if="file">{{Util.prettify(file)}}</pre>
-                <button class="btn btn-primary" ng-click="resizeFile()" ng-if="file">{{resize.state}}</button>
-                setDimTo:
-                <button class="btn btn-primary" ng-click="setDimTo(90)">90 thumb</button>
-                <button class="btn btn-primary" ng-click="setDimTo(1024)">1024 Max</button>
+                <button class="btn" ng-click="resizeFile()" ng-class="{'btn-warning':(resize.state == 'loading...'),'btn-success':(resize.state != 'loading...')}" ng-if="file">{{resize.state}}</button>
+                <br ng-if="file" /><br ng-if="file" />
+                <div ng-if="file">
+                    setDimTo:
+                    <button class="btn btn-default" ng-click="setDimTo(90)" ng-class="{'btn-primary':resize.width==90}">90x90 thumb</button>
+                    <button class="btn btn-default" ng-click="setDimTo(1024)" ng-class="{'btn-primary':resize.width==1024}">1024x1024 Max</button>
+                </div>
             </div>
         </div>
 
@@ -66,7 +71,7 @@
             </ul>
         </div-->
     </div>
-
+    <hr>
     <div class="row states">
         <h4>
             <span class="label label-default">resizeSet: {{resize.width}} x {{resize.height}}px | {{resize.mime}} | qual: {{resize.quality}}</span>
