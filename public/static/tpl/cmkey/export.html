@@ -12,22 +12,23 @@
             <div class="alert">
                 fileName: <strong>{{fileName}}</strong><br />
                 mimeType: <strong>{{mimeType}}</strong> <a href="http://de.selfhtml.org/diverses/mimetypen.htm">alle mimetypes</a><br />
-                salt: <strong>{{key}}</strong>
+                salt: <strong>{{salt}}</strong>
             </div>
 
-            <button type="button" class="btn btn-primary btn-sm" ng-click="exportViaFileapi()">exportViaFileapi</button>
+            <button type="button" class="btn btn-primary btn-sm" ng-click="exportViaFileapi()">export via Fileapi</button>
 
             <br />
             <br />
 
-            <button type="button" class="btn btn-primary btn-sm" ng-click="exportViaSaveAs()">exportViaSaveAs</button>
+            <button type="button" class="btn btn-primary btn-sm" ng-click="exportViaSaveAs()">export via SaveAs</button>
         </div>
         <h3 class="panel-title">
             <h2>import</h2>
         </h3>
         <div class="panel-body">
             <input type="file" ng-upload="file" />
-            <pre>{{file}}</pre>
+            <button type="button" class="btn btn-primary btn-sm" ng-click="importKey()">readFile and import</button>
+            <pre ng-if="!isPristine" class="alert" ng-class="{'alert-success':importSuccess,'alert-danger':!importSuccess}">{{importMessage}}</pre>
         </div>
     </div>
 </section>

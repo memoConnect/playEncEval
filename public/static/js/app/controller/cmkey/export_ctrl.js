@@ -38,13 +38,13 @@ define(['app',
                 '-----END RSA PRIVATE KEY-----'].join('\n');
 
 
-                $scope.key = 'YVNRL-FXMOO-EQCFG-KYVME-ROVPL-IKONJ-PQUCS-WTDUI-LNYRX-BVUGT-RCNSK-OFQLJ';//Crypto.genKey();
+                $scope.salt = 'YVNRL-FXMOO-EQCFG-KYVME-ROVPL-IKONJ-PQUCS-WTDUI-LNYRX-BVUGT-RCNSK-OFQLJ';//Crypto.genKey();
                 $scope.mimeType = 'multipart/encrypted';
                 $scope.fileName = 'priykey.cm';
                 $scope.file = {};
 
                 function encryptKey(){
-                    var encryptedPrivKey = sjcl.json.encrypt(String($scope.key), String(privKey), {cipher: "aes", ks: 256, iter: 500 });
+                    var encryptedPrivKey = sjcl.json.encrypt(String($scope.salt), String(privKey), {cipher: "aes", ks: 256, iter: 500 });
                     return encryptedPrivKey;
                 }
 
@@ -66,8 +66,41 @@ define(['app',
                         new Blob([encryptKey()], {type:$scope.mimeType}),
                         $scope.fileName
                     );
-                }
+                };
 
+                $scope.isPristine = true;
+                $scope.importSuccess = false;
+                $scope.importMessage = '';
+
+                $scope.importKey = function(){
+
+                    $scope.isPristine = false;
+
+                    var reader = new FileReader();
+                    reader.addEventListener('loadend', function(e) {
+                        console.log('filereader loaded',e)
+
+                        var fileData = e.target.result,
+                            _privKey_ = '';
+
+                        try {
+                            _privKey_ = sjcl.decrypt(String($scope.salt), fileData);
+                            $scope.importSuccess = true;
+                            $scope.importMessage = _privKey_;
+                            console.log(_privKey_)
+                        } catch (e) {
+                            //                    cmLogger.warn('Unable to decrypt.', e)
+                            //                    console.warn(e)
+                            $scope.importSuccess = false;
+                            $scope.importMessage = e.message;
+                            console.log(e)
+                        }
+
+                        $scope.$apply();
+                    });
+                    console.log('filereader readAsBinaryString')
+                    reader.readAsBinaryString($scope.file);
+                };
             }
         ])
     }
