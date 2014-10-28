@@ -4,6 +4,7 @@ define(['app',
         '_s/cryptoService',
         '_v/filesaver/filesaver',
         '_v/sjcl/main.min',
+        '_v/base64',
         'directive/ngUpload'
     ],
     function (app) {
@@ -38,14 +39,17 @@ define(['app',
                 '-----END RSA PRIVATE KEY-----'].join('\n');
 
 
-                $scope.salt = 'YVNRL-FXMOO-EQCFG-KYVME-ROVPL-IKONJ-PQUCS-WTDUI-LNYRX-BVUGT-RCNSK-OFQLJ';//Crypto.genKey();
+                $scope.mixIn = 'YVNRL-FXMOO-EQCFG-KYVME-ROVPL-IKONJ-PQUCS-WTDUI-LNYRX-BVUGT-RCNSK-OFQLJ';//Crypto.genKey();
                 $scope.mimeType = 'multipart/encrypted';
-                $scope.fileName = 'priykey.cm';
+                $scope.fileName = 'keyName.cameoKey';
                 $scope.file = {};
 
                 function encryptKey(){
-                    var encryptedPrivKey = sjcl.json.encrypt(String($scope.salt), String(privKey), {cipher: "aes", ks: 256, iter: 500 });
-                    return encryptedPrivKey;
+                    var encryptedPrivKey = sjcl.json.encrypt(String($scope.mixIn), String(privKey), {
+                        cipher: "aes", ks: 256, iter: 500
+                    });
+
+                    return _Base64.encode(encryptedPrivKey);
                 }
 
                 $scope.exportViaFileapi = function(){
@@ -84,7 +88,7 @@ define(['app',
                             _privKey_ = '';
 
                         try {
-                            _privKey_ = sjcl.decrypt(String($scope.salt), fileData);
+                            _privKey_ = sjcl.decrypt(String($scope.mixIn), _Base64.decode(fileData));
                             $scope.importSuccess = true;
                             $scope.importMessage = _privKey_;
                             console.log(_privKey_)
