@@ -1,0 +1,33 @@
+<div class="page-header">
+    <h2>key export/import</h2>
+</div>
+<section class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <h2>export</h2>
+            <a href="http://www.drweb.de/magazin/filesystem-api-dateien-erstellen-und-lokal-speichern-mit-javascript-und-webkit-45076/" target="_blank">DrWeb fileapi</a><br />
+            Filepath: C:\Users\dutscher\AppData\Local\Google\Chrome\User Data\Default\File System\006\p\00
+        </h3>
+        <div class="panel-body">
+            <div class="alert">
+                fileName: <strong>{{fileName}}</strong><br />
+                mimeType: <strong>{{mimeType}}</strong> <a href="http://de.selfhtml.org/diverses/mimetypen.htm">alle mimetypes</a><br />
+                salt: <strong>{{key}}</strong>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-sm" ng-click="exportViaFileapi()">exportViaFileapi</button>
+
+            <br />
+            <br />
+
+            <button type="button" class="btn btn-primary btn-sm" ng-click="exportViaSaveAs()">exportViaSaveAs</button>
+        </div>
+        <h3 class="panel-title">
+            <h2>import</h2>
+        </h3>
+        <div class="panel-body">
+            <input type="file" ng-upload="file" />
+            <pre>{{file}}</pre>
+        </div>
+    </div>
+</section>
